@@ -199,17 +199,12 @@ export const categoryService = {
   },
 
   // Create a new category
-  // createCategory: async (data: { name: string }) => {
-  //   const response = await api.post("/api/category/create", data);
-  //   return response.data;
-  // },
-   
-  createProduct: async (product: FormData) => {
-    const response = await api.post("/api/product/create", product, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+  createCategory: async (data: { name: string }) => {
+    const response = await api.post("/api/category/create", data);
     return response.data;
   },
+   
+ 
 
   // Update category
   updateCategory: async (id: number, data: { name: string }) => {
@@ -244,11 +239,18 @@ export const blogService = {
   },
 
   // Update blog
+  // updateBlog: async (id: string, blogData: FormData) => {
+  //   return await api.patch(`/api/blog/blogs/${id}`, blogData, {
+  //     headers: { "Content-Type": "multipart/form-data" },
+  //   });
+  // },
+
+
   updateBlog: async (id: string, blogData: FormData) => {
-    return await api.patch(`/api/blog/blogs/${id}`, blogData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-  },
+  return await api.patch(`/api/blog/blogs/${id}`, blogData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+},
 
   // Delete blog
   deleteBlog: async (id: string) => {

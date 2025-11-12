@@ -80,7 +80,7 @@ const BlogForm: React.FC = () => {
       }
 
       if (blog) {
-        await dispatch(updateBlog({ id: blog.id.toString(), blog: formData })).unwrap();
+        await dispatch(updateBlog({ id: blog.id.toString(), blogData: formData })).unwrap();
         message.success("Blog updated successfully");
       } else {
         await dispatch(createBlog(formData)).unwrap();

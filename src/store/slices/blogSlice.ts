@@ -129,15 +129,20 @@ const blogSlice = createSlice({
       })
 
       // ===== Update blog =====
+      // .addCase(updateBlog.fulfilled, (state, action) => {
+      //   const updated = action.payload.data;
+      //   state.blogs = state.blogs.map((b) =>
+      //     b.id === updated.id ? updated : b
+      //   );
+      //   if (state.selectedBlog?.id === updated.id) {
+      //     state.selectedBlog = updated;
+      //   }
+      // })
       .addCase(updateBlog.fulfilled, (state, action) => {
-        const updated = action.payload.data;
-        state.blogs = state.blogs.map((b) =>
-          b.id === updated.id ? updated : b
-        );
-        if (state.selectedBlog?.id === updated.id) {
-          state.selectedBlog = updated;
-        }
-      })
+  const updated = action.payload.data;
+  state.blogs = state.blogs.map((b) => (b.id === updated.id ? updated : b));
+})
+
       .addCase(updateBlog.rejected, (state, action) => {
         state.error = action.payload as string;
       })
