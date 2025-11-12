@@ -4,6 +4,8 @@ import userReducer from './slices/userSlice';
 import pageReducer from './slices/pageSlice';
 import queryReducer from './slices/querySlice';
 import productReducer from './slices/productSlice';
+import categoryReducer from './slices/categorySlice';
+import blogReducer from './slices/blogSlice';
 
 
 export const store = configureStore({
@@ -12,7 +14,9 @@ export const store = configureStore({
     users: userReducer,
     pages: pageReducer,
     queries: queryReducer,
-    products: productReducer
+    products: productReducer,
+    categories: categoryReducer,
+    blogs: blogReducer
   },
 });
 

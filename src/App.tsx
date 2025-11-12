@@ -14,6 +14,13 @@ import QueryList from "./components/Querys/QueryList";
 import PageForm from "./components/Pages/PageForm";
 import ProductForm from "./components/Product/ProductForm";
 import ProductList from "./components/Product/ProductList";
+// import FeatureDetails from "../components/Product/FeatureDetail";
+import FeatureDetails from "./components/Product/FeatureDetail";
+import CategoryForm from "./components/Category/CategoryForm";
+import CategoryList from "./components/Category/CategoryList";
+import BlogForm from "./components/Blog/BlogForm"
+import BlogList from "./components/Blog/BlogList"
+
 
 function App() {
   return (
@@ -38,6 +45,11 @@ function App() {
             <Route path="queries" element={<QueryList />} />
             <Route path="products" element={<ProductList />} />
             <Route path="productsForm" element={<ProductForm />} />
+            <Route path="feature-details" element={<FeatureDetails />} />
+            <Route path="blogs" element={<BlogList />} />
+            <Route path="blogForm" element={<BlogForm />} />
+            <Route path="categories" element={<CategoryList />}></Route>
+            <Route path="categoryForm" element={<CategoryForm />}></Route>
           </Route>
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>

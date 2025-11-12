@@ -74,7 +74,16 @@ const DashboardLayout: React.FC = () => {
                 icon: <FileQuestion size={18} />,
                 label: 'Product',
               },
-              
+              {
+                key: '/dashboard/blogs',
+                icon: <FileQuestion size={18} />,
+                label: 'Blog',
+              },
+              // {
+              //   key: '/dashboard/categories',
+              //   icon: <FileQuestion size={18} />,
+              //   label: 'Category',
+              // },
              
             ]}
 
