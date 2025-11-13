@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^2.2.1",
     "antd": "^5.14.1",
     "axios": "^1.6.7",
+    "dompurify": "^3.3.0",
     "framer-motion": "^12.4.7",
     "lucide-react": "^0.344.0",
     "moment": "^2.30.1",

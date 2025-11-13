@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { fetchBlogs, deleteBlog } from "../../store/slices/blogSlice";
+import DOMPurify from "dompurify";
 
 const BlogList: React.FC = () => {
   const navigate = useNavigate();
@@ -48,21 +49,29 @@ const BlogList: React.FC = () => {
         return record.category ? record.category.name : "N/A";
       },
     },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      render: (text: string) => (text?.length > 60 ? text.slice(0, 60) + "..." : text),
-    },
     // {
-    //   title: "Updated At",
-    //   dataIndex: "updatedAt",
-    //   key: "updatedAt",
-    //   render: (date: string) => {
-    //     const d = new Date(date);
-    //     return isNaN(d.getTime()) ? "N/A" : d.toLocaleDateString() + " " + d.toLocaleTimeString();
-    //   },
+    //   title: "Description",
+    //   dataIndex: "description",
+    //   key: "description",
+    //   render: (text: string) => (text?.length > 60 ? text.slice(0, 60) + "..." : text),
     // },
+
+    {
+  title: "Description",
+  dataIndex: "description",
+  key: "description",
+  render: (text: string) => (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: DOMPurify.sanitize(
+          text?.length > 60 ? text.slice(0, 60) + "..." : text || ""
+        ),
+      }}
+    ></div>
+  ),
+},
+
+    
 
     {
   title: "Updated At",

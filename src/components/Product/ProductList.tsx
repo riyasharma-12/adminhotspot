@@ -469,6 +469,8 @@ import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "../../store/slices/productSlice";
 import { productService } from "../../services/api";
 import { featureService } from "../../services/api";
+import DOMPurify from "dompurify";
+
 
 const ProductList: React.FC = () => {
   const navigate = useNavigate();
@@ -585,13 +587,33 @@ const ProductList: React.FC = () => {
       dataIndex: "title",
       key: "title",
     },
+    // {
+    //   title: "Description",
+    //   dataIndex: "description",
+    //   key: "description",
+    //   render: (text: string) =>
+    //     text?.length > 60 ? text.slice(0, 60) + "..." : text,
+    // },
+
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      render: (text: string) =>
-        text?.length > 60 ? text.slice(0, 60) + "..." : text,
-    },
+  title: "Description",
+  dataIndex: "description",
+  key: "description",
+  render: (text: string) => (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: DOMPurify.sanitize(
+          text
+            ? text.length > 60
+              ? text.slice(0, 60) + "..."
+              : text
+            : ""
+        ),
+      }}
+    ></div>
+  ),
+},
+
     {
       title: "Updated At",
       dataIndex: "updatedAt",
