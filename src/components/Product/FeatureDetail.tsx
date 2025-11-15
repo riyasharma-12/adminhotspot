@@ -43,7 +43,7 @@ const FeatureDetails: React.FC = () => {
     }
   };
 
-  // ✅ Add or Update Feature
+  //  Add or Update Feature
   const handleFeatureSubmit = async (values: any) => {
     if (!editingFeature && fileList.length === 0) {
       message.error("Please upload an image");
@@ -82,7 +82,7 @@ const FeatureDetails: React.FC = () => {
     }
   };
 
-  // 🟠 Open drawer for editing
+  //  Open drawer for editing
   const handleEdit = (feature: any) => {
     setEditingFeature(feature);
     setDrawerVisible(true);
@@ -145,8 +145,7 @@ const FeatureDetails: React.FC = () => {
           style={{ borderRadius: 8, objectFit: "cover" }}
         />
         <div className="max-w-2xl">
-          <p className="text-lg text-gray-700 leading-relaxed">
-            {product?.description}
+          <p className="text-lg text-gray-700 leading-relaxed " dangerouslySetInnerHTML={{ __html: product?.description }}>
           </p>
         </div>
       </div>
