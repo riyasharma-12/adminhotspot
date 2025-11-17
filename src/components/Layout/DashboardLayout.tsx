@@ -53,11 +53,11 @@ const DashboardLayout: React.FC = () => {
                 icon: <LayoutDashboard size={18} />,
                 label: 'Dashboard',
               },
-              {
-                key: '/dashboard/users',
-                icon: <Users size={18} />,
-                label: 'Users',
-              },
+              // {
+              //   key: '/dashboard/users',
+              //   icon: <Users size={18} />,
+              //   label: 'Users',
+              // },
              
               {
                 key: '/dashboard/pages',
