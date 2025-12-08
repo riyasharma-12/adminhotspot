@@ -3,8 +3,8 @@ import axios from 'axios';
 // import { Recipient } from '../types';
 
 
-// const BASE_URL = 'http://52.45.166.100:5000';
-const BASE_URL = "https://streamapi.thestreamlinefactory.com";
+const BASE_URL = 'http://52.45.166.100:5000';
+// const BASE_URL = "https://streamapi.thestreamlinefactory.com";
 // const BASE_URL = "http://localhost:5000";
 
 
