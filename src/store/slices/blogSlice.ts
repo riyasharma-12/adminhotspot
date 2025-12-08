@@ -34,13 +34,13 @@ export const fetchBlogs = createAsyncThunk("blogs/fetchBlogs", async () => {
   return response.data;
 });
 
-export const fetchBlogById = createAsyncThunk(
-  "blogs/fetchBlogById",
-  async (id: string) => {
-    const response = await blogService.getBlogById(id);
-    return response.data;
-  }
-);
+// export const fetchBlogById = createAsyncThunk(
+//   "blogs/fetchBlogById",
+//   async (id: string) => {
+//     const response = await blogService.getBlogById(id);
+//     return response.data;
+//   }
+// );
 
 export const createBlog = createAsyncThunk(
   "blogs/createBlog",

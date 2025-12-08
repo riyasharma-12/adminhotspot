@@ -4,8 +4,8 @@ import axios from 'axios';
 
 
 // const BASE_URL = 'http://52.45.166.100:5000';
-const BASE_URL = "https://streamapi.thestreamlinefactory.com";
-// const BASE_URL = "http://localhost:5000";
+// const BASE_URL = "https://streamapi.thestreamlinefactory.com";
+const BASE_URL = "http://localhost:5000";
 
 
 
@@ -258,5 +258,224 @@ export const blogService = {
   },
 };
 
+export const aboutService = {
+  // Get all about sections
+  getAbout: async () => {
+    const response = await api.get("/api/about/");
+    return response.data;
+  },
+
+  // Get about by ID
+  getAboutById: async (id: string) => {
+    const response = await api.get(`/api/about/${id}`);
+    return response.data;
+  },
+
+  // Create about (with video upload)
+  createAbout: async (formData: FormData) => {
+    const response = await api.post("/api/about/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
+
+  // // Update about (with video file support)
+  updateAbout: async (id: string, formData: FormData) => {
+    const response = await api.patch(`/api/about/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
+
+  // Delete about
+  deleteAbout: async (id: number | string) => {
+    const response = await api.delete(`/api/about/${id}`);
+    return response.data;
+  },
+};
+
+export const reviewService = {
+  // Get all reviews
+  getReviews: async () => {
+    const response = await api.get("/api/reviews/");
+    return response.data;
+  },
+
+  // Get review by ID
+  getReviewById: async (id: string) => {
+    const response = await api.get(`/api/reviews/${id}`);
+    return response.data;
+  },
+
+  // Create review (with image upload)
+  createReview: async (formData: FormData) => {
+    const response = await api.post("/api/reviews/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
+
+  // Update review (image upload supported)
+  updateReview: async (id: string, formData: FormData) => {
+    const response = await api.patch(`/api/reviews/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
+
+  // Delete review
+  deleteReview: async (id: string) => {
+    const response = await api.delete(`/api/reviews/${id}`);
+    return response.data;
+  },
+
+}
 
 
+export const serviceApi = {
+  
+  getAllServices: async () => {
+    const response = await api.get("/api/services/");
+    return response.data;
+  },
+
+ 
+  getServiceById: async (id: number | string) => {
+    const response = await api.get(`/api/services/${id}`);
+    return response.data;
+  },
+
+  
+  createService: async (formData: FormData) => {
+    const response = await api.post("/api/services", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
+
+  
+  updateService: async (id: number | string, formData: FormData) => {
+    const response = await api.patch(`/api/services/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
+
+  
+  deleteService: async (id: number | string) => {
+    const response = await api.delete(`/api/services/${id}`);
+    return response.data;
+  },
+};
+
+export const founderService = {
+  getFounders: async () => {
+    const resp = await api.get("/api/founders");
+    return resp.data;
+  },
+
+  getFounderById: async (id: number | string) => {
+    const resp = await api.get(`/api/founders/${id}`);
+    return resp.data;
+  },
+
+  createFounder: async (formData: FormData) => {
+    const resp = await api.post("/api/founders", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return resp.data;
+  },
+
+  updateFounder: async (id: number | string, formData: FormData) => {
+    const resp = await api.patch(`/api/founders/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return resp.data;
+  },
+
+  deleteFounder: async (id: number | string) => {
+    const resp = await api.delete(`/api/founders/${id}`);
+    return resp.data;
+  },
+};
+
+export const homeService = {
+  getHomes: () => api.get("/api/home"),
+  createHome: (data: FormData) =>
+    api.post("/api/home", data, { headers: { "Content-Type": "multipart/form-data" } }),
+  updateHome: (id: number, data: FormData) =>
+    api.patch(`/api/home/${id}`, data, { headers: { "Content-Type": "multipart/form-data" } }),
+  deleteHome: (id: number) => api.delete(`/api/home/${id}`),
+};
+
+export const missionVisionApi = {
+  getAll: () => api.get("/api/mission"),
+  getById: (id: number) => api.get(`/api/mission/${id}`),
+  create: (data: any) => api.post("/api/mission", data),
+  update: (id: number, data: any) => api.put(`/api/mission/${id}`, data),
+  delete: (id: number) => api.delete(`/api/mission/${id}`)
+};
+
+export  const whyChooseService = {
+  create: async (data: any) => {
+    const res = await api.post("/api/whychoose", data);
+    return res.data.data;
+  },
+
+  getAll: async () => {
+    const res = await api.get("/api/whychoose");
+    return res.data.data;
+  },
+
+  getById: async (id: number) => {
+    const res = await api.get(`/api/whychoose/${id}`);
+    return res.data.data;
+  },
+
+  update: async (id: number, data: any) => {
+    const res = await api.put(`/api/whychoose/${id}`, data);
+    return res.data.data;
+  },
+
+  delete: async (id: number) => {
+    const res = await api.delete(`/api/whychoose/${id}`);
+    return res.data;
+  },
+};
+
+
+export const productHeadingService = {
+  getAll: async () => {
+    const res = await api.get("/api/product-headings");
+    return res.data;
+  },
+
+  getById: async (id: number | string) => {
+    const res = await api.get(`/api/product-headings/${id}`);
+    return res.data;
+  },
+
+  create: async (data: { title: string; description: string }) => {
+    const res = await api.post("/api/product-headings", data);
+    return res.data;
+  },
+
+  update: async (id: number | string, data: { title?: string; description?: string }) => {
+    const res = await api.put(`/api/product-headings/${id}`, data);
+    return res.data;
+  },
+
+  delete: async (id: number | string) => {
+    const res = await api.delete(`/api/product-headings/${id}`);
+    return res.data;
+  },
+};
+
+
+
+
+
+
+
+
+ 

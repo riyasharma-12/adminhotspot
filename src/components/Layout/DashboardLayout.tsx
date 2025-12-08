@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Users, FileText, LogOut, LayoutDashboard, FileQuestion } from 'lucide-react';
+import {  FileText, LogOut, LayoutDashboard, FileQuestion } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
 import { RootState } from '../../store/store';
@@ -79,12 +79,26 @@ const DashboardLayout: React.FC = () => {
                 icon: <FileQuestion size={18} />,
                 label: 'Blog',
               },
-              // {
-              //   key: '/dashboard/categories',
-              //   icon: <FileQuestion size={18} />,
-              //   label: 'Category',
-              // },
-             
+              {
+                key: '/dashboard/abouts',
+                icon: <FileQuestion size={18} />,
+                label: 'About',
+              },
+              {
+                key: '/dashboard/reviews',
+                icon: <FileQuestion size={18} />,
+                label: 'Reviews',
+              },
+             {
+                key: '/dashboard/services',
+                icon: <FileQuestion size={18} />,
+                label: 'Services',
+              },
+              {
+                key: '/dashboard/homes',
+                icon: <FileQuestion size={18} />,
+                label: 'Home',
+              },
             ]}
 
           />

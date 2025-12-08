@@ -14,12 +14,27 @@ import QueryList from "./components/Querys/QueryList";
 import PageForm from "./components/Pages/PageForm";
 import ProductForm from "./components/Product/ProductForm";
 import ProductList from "./components/Product/ProductList";
-// import FeatureDetails from "../components/Product/FeatureDetail";
 import FeatureDetails from "./components/Product/FeatureDetail";
 import CategoryForm from "./components/Category/CategoryForm";
 import CategoryList from "./components/Category/CategoryList";
 import BlogForm from "./components/Blog/BlogForm"
 import BlogList from "./components/Blog/BlogList"
+import AboutForm from "./components/About/AboutForm";
+import AboutPage from "./components/About/AboutPage"
+import ReviewForm from "./components/Reviews/ReviewForm";
+import ReviewList from "./components/Reviews/ReviewList";
+import ServiceForm from "./components/Service/ServiceForm";
+import ServiceList from "./components/Service/ServiceList";
+import FounderForm from "./components/Founder/FounderFom";
+import FounderList from "./components/Founder/FounderList";
+import HomeForm from "./components/home2/homeForm";
+import HomeList from "./components/home2/homeList";
+import MissionForm from "./components/mission/MVisionForm";
+import MissionList from "./components/mission/MVisionList"
+import WhyChooseForm from "./components/whyChoose/WhyChooseForm";
+import WhyChooseList from "./components/whyChoose/WhyChooseList";
+import ProductHeadingForm from "./components/productHeading/HeadingProductForm";
+import ProductHeadingList from "./components/productHeading/HeadingProductList"
 
 
 function App() {
@@ -50,6 +65,22 @@ function App() {
             <Route path="blogForm" element={<BlogForm />} />
             <Route path="categories" element={<CategoryList />}></Route>
             <Route path="categoryForm" element={<CategoryForm />}></Route>
+            <Route path="aboutForm" element={<AboutForm/>}></Route>
+            <Route path="abouts" element={<AboutPage/>}></Route>
+            <Route path="reviewsForm" element={<ReviewForm/>}></Route>
+            <Route path="reviews"  element={<ReviewList/>}></Route>
+            <Route path="serviceForm" element={<ServiceForm/>}></Route>
+            <Route path="services"  element={<ServiceList/>}></Route>
+            <Route path="founderForm" element={<FounderForm/>}></Route>
+            <Route path="founderList" element={<FounderList/>}></Route>
+            <Route path="homeForm" element={<HomeForm/>}></Route>
+            <Route path="homes" element={<HomeList/>}></Route>
+            <Route path="missionForm" element={<MissionForm/>}></Route>
+            <Route path="mission" element={<MissionList/>}></Route>
+            <Route path="whyChooseForm" element={<WhyChooseForm/>}></Route>
+            <Route path="whyChooseList" element={<WhyChooseList/>}></Route>
+            <Route path="productHeadingForm" element={<ProductHeadingForm/>}></Route>
+            <Route path="productHeading" element={<ProductHeadingList />}></Route>
           </Route>
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
