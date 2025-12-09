@@ -95,15 +95,15 @@ const WhyChooseList = () => {
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-semibold">Why Choose Us</h1>
 
-                {/* <Button
+                <Button
           type="primary"
           icon={<Plus size={16} />}
           onClick={() => navigate("/dashboard/whyChooseForm")}
         >
           Create Why Choose
-        </Button> */}
+        </Button>
 
-                {items?.length === 0 && (
+                {/* {items?.length === 0 && (
                     <Button
                         type="primary"
                         icon={<Plus />}
@@ -111,7 +111,7 @@ const WhyChooseList = () => {
                     >
                         Create Home
                     </Button>
-                )}
+                )} */}
 
             </div>
 
