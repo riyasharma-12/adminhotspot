@@ -9,11 +9,17 @@ import { useDispatch } from "react-redux";
 import { createProduct, updateProduct } from "../../store/slices/productSlice";
 
 const ProductForm: React.FC = () => {
+
+  // ADD THIS AT TOP
+const TITLE_LIMIT = 100;
+const DESCRIPTION_LIMIT = 320;
+
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<any>();
 
   const product = location.state?.product;
+  // const [description, setDescription] = useState(product?.description || "");
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any[]>([]);
 
@@ -41,6 +47,8 @@ const ProductForm: React.FC = () => {
   const handleGoBack = () => navigate("/dashboard/products");
 
   const handleSubmit = async (values: any) => {
+  
+
     if (fileList.length === 0 && !product?.image) {
       message.error("Please upload a product image");
       return;
@@ -95,14 +103,33 @@ const ProductForm: React.FC = () => {
         </h1>
 
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <Form.Item
+          {/* <Form.Item
             name="title"
             label="Product Title"
             rules={[{ required: true, message: "Enter product title" }]}
           >
             <Input placeholder="Enter product title" />
-          </Form.Item>
-
+          </Form.Item> */}
+           <Form.Item
+    name="title"
+    label={`Product Title `}
+    rules={[
+      { required: true, message: "Enter product title" },
+      {
+        max: TITLE_LIMIT,
+        message: `Title cannot exceed ${TITLE_LIMIT} characters.`,
+      },
+    ]}
+  >
+    <Input
+      placeholder="Enter product title"
+      onChange={(e) => {
+        if (e.target.value.length <= TITLE_LIMIT) {
+          form.setFieldsValue({ title: e.target.value });
+        }
+      }}
+    />
+  </Form.Item>
           <Form.Item label="Product Image">
             <Upload
               fileList={fileList}
@@ -118,15 +145,15 @@ const ProductForm: React.FC = () => {
           </Form.Item>
 
           {/* FIXED: ReactQuill Connected to Antd Form */}
-          <Form.Item
+            <Form.Item
             name="description"
             label="Description"
             rules={[{ required: true, message: "Enter product description" }]}
             getValueFromEvent={(content) => content} // REQUIRED ✔
           >
             <ReactQuill theme="snow" style={{ height: "200px" }} />
-          </Form.Item>
-
+          </Form.Item>   
+           
           <Form.Item className="mt-4">
             <Button type="primary" htmlType="submit">
               {product ? "Update Product" : "Create Product"}
@@ -139,3 +166,5 @@ const ProductForm: React.FC = () => {
 };
 
 export default ProductForm;
+
+

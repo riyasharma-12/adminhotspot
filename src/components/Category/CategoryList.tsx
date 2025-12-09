@@ -6,10 +6,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { fetchCategories, deleteCategory } from "../../store/slices/categorySlice";
+import type { AppDispatch } from "../../store/store";
+
 
 const CategoryList: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
   const { categories, loading } = useSelector((state: RootState) => state.categories);
 
   useEffect(() => {
@@ -19,7 +23,8 @@ const CategoryList: React.FC = () => {
   const handleDelete = async (id: number) => {
     const hide = message.loading("Deleting category...", 0);
     try {
-      await dispatch(deleteCategory(id)).unwrap();
+      // await dispatch(deleteCategory(id)).unwrap();
+      await dispatch(deleteCategory(Number(id))).unwrap();
       message.success("Category deleted successfully");
     } catch (error: any) {
       message.error(error || "Failed to delete category");
@@ -65,13 +70,20 @@ const CategoryList: React.FC = () => {
 
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Categories</h1>
-        <Button
+          <Button
           type="primary"
           icon={<Plus size={16} />}
-          onClick={() => navigate("/dashboard/blogs")}
+          onClick={() => navigate("/dashboard/categoryForm")}
         >
           Add Category
         </Button>
+        {/* <Button
+          type="primary"
+          icon={<Plus size={16} />}
+          onClick={() => navigate("/dashboard/categoryForm")}
+        >
+          Add Category
+        </Button> */}
       </div>
 
       <Table

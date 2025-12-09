@@ -59,6 +59,9 @@ const MissionVisionList = () => {
     <div className="p-6">
       <div className="flex justify-between mb-4">
         <h1 className="text-xl font-semibold">Mission & Vision</h1>
+        {items?.length === 0 && (
+           <Button type="primary" icon={<Plus />} onClick={() => navigate("/dashboard/missionForm")}>Create Mission</Button>
+        )}
       </div>
 
       <Table

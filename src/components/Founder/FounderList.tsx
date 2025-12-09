@@ -29,9 +29,11 @@ const FounderList: React.FC = () => {
         <div className="max-w-5xl mx-auto bg-white p-6 rounded shadow mt-6">
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-semibold">Founders</h1>
-                <Button type="primary" icon={<Plus />} onClick={() => navigate("/dashboard/founders/create")}>
+                {founders.length === 0 && (
+                    <Button type="primary" icon={<Plus />} onClick={() => navigate("/dashboard/founderForm")}>
                     Create Founder
                 </Button>
+                )}
             </div>
 
             {loading ? (
@@ -65,7 +67,6 @@ const FounderList: React.FC = () => {
                                     <td className="p-3">{f.description?.length > 80 ? f.description.slice(0, 80) + "..." : f.description}</td>
                                     <td className="p-3 text-center">
                                         <div className="flex justify-center gap-2">
-                                            {/* <Button icon={<Edit2 size={16} />} onClick={() => navigate("/dashboard/founders/edit/" + f.id, { state: { founder: f } })} /> */}
                                             <Button
                                                 icon={<Edit2 size={16} />}
                                                 onClick={() =>

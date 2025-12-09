@@ -25,6 +25,14 @@ const ProductHeadingForm = () => {
   }, [editData, form]);
 
   const onFinish = async (values: any) => {
+    if (values.title.length > 70) {
+      return message.error("Title cannot exceed 70 characters");
+    }
+
+    if (values.description.length > 300) {
+      return message.error("Description cannot exceed 300 characters");
+    }
+
     try {
       if (editData) {
         await dispatch(
@@ -53,18 +61,33 @@ const ProductHeadingForm = () => {
         <Form.Item
           name="title"
           label="Title"
-          rules={[{ required: true, message: "Title is required" }]}
-        >
-          <Input />
+        rules={[
+                                { required: true, message: "Enter title" },
+                                {
+                                    validator: (_, value) =>
+                                        value && value.length > 70
+                                            ? Promise.reject("Title cannot exceed 70 characters.")
+                                            : Promise.resolve(),
+                                },
+                            ]}
+                        >
+                            <Input maxLength={70} showCount />
         </Form.Item>
 
         {/* Description */}
         <Form.Item
           name="description"
           label="Description"
-          rules={[{ required: true, message: "Description is required" }]}
-        >
-          <Input.TextArea rows={4} />
+         rules={[
+                             { required: true, message: "Enter description" },
+                             {
+                                 validator: (_, value) =>
+                                     value && value.length > 300
+                                         ? Promise.reject("Description cannot exceed 300 characters.")
+                                         : Promise.resolve(),
+                             },
+                         ]}>
+                             <Input.TextArea rows={6} maxLength={300} showCount />
         </Form.Item>
 
         <Button type="primary" htmlType="submit">

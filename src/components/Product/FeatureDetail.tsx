@@ -103,10 +103,11 @@ const FeatureDetails: React.FC = () => {
   };
 
   
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string | number) => {
     const hide = message.loading("Deleting feature...", 0);
     try {
-      await featureService.deleteFeature(id);
+      // await featureService.deleteFeature(id.toString());
+       await featureService.deleteFeature(Number(id));
       message.success("Feature deleted successfully");
       fetchFeatures();
     } catch (err: any) {
@@ -121,7 +122,7 @@ const FeatureDetails: React.FC = () => {
       {/* Top Section */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">{product?.title}</h1>
-        <Button
+         <Button
           type="primary"
           icon={<Plus size={16} />}
           onClick={() => {
@@ -215,17 +216,37 @@ const FeatureDetails: React.FC = () => {
           <Form.Item
             name="title"
             label="Feature Title"
-            rules={[{ required: true, message: "Enter feature title" }]}
-          >
-            <Input placeholder="Feature title" />
+            // rules={[{ required: true, message: "Enter feature title" }]}
+            rules={[
+                                    { required: true, message: "Enter title" },
+                                    {
+                                        validator: (_, value) =>
+                                            value && value.length > 70
+                                                ? Promise.reject("Title cannot exceed 100 characters.")
+                                                : Promise.resolve(),
+                                    },
+                                ]}
+                            >
+                                <Input maxLength={70} showCount />
+            {/* <Input placeholder="Feature title" /> */}
           </Form.Item>
 
           <Form.Item
             name="description"
             label="Feature Description"
-            rules={[{ required: true, message: "Enter feature description" }]}
-          >
-            <Input.TextArea rows={3} placeholder="Feature description" />
+          //   rules={[{ required: true, message: "Enter feature description" }]}
+          // >
+          //   <Input.TextArea rows={3} placeholder="Feature description" />
+          rules={[
+                              { required: true, message: "Enter description" },
+                              {
+                                  validator: (_, value) =>
+                                      value && value.length > 300
+                                          ? Promise.reject("Description cannot exceed 300 characters.")
+                                          : Promise.resolve(),
+                              },
+                          ]}>
+                              <Input.TextArea rows={6} maxLength={300} showCount />
           </Form.Item>
 
           <Form.Item label="Image">

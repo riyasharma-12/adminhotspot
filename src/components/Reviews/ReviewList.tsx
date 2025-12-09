@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Table, Button, Space, Image, message } from "antd";
-import { Edit2, Trash2, Plus } from "lucide-react";
+import { Edit2, Trash2, Plus, Divide } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
@@ -102,14 +102,15 @@ const ReviewList: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Reviews</h1>
-
-        <Button
+         {reviews.length === 0 && (
+           <Button
           type="primary"
           icon={<Plus size={16} />}
           onClick={() => navigate("/dashboard/reviewsForm")}
         >
           Create Review
         </Button>
+         )}
       </div>
 
       {/* Table */}

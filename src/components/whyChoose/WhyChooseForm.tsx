@@ -73,18 +73,35 @@ const WhyChooseForm = () => {
         <Form.Item
           name="heading"
           label="Heading"
-          rules={[{ required: true, message: "Heading required" }]}
+        rules={[
+            { required: true, message: "Heading is required" },
+            {
+              validator: (_, value) =>
+                value && value.length > 50
+                  ? Promise.reject("Heading cannot exceed 50 characters.")
+                  : Promise.resolve(),
+            },
+          ]}
         >
-          <Input />
+          <Input maxLength={50} showCount />
         </Form.Item>
 
         {/* Description */}
         <Form.Item
           name="description"
           label="Description"
-          rules={[{ required: true }]}
+       rules={[
+            { required: true, message: "Description is required" },
+            {
+              validator: (_, value) =>
+                value && value.length > 270
+                  ? Promise.reject("Description cannot exceed 300 characters.")
+                  : Promise.resolve(),
+            },
+          ]}
         >
-          <Input.TextArea rows={3} />
+          <Input.TextArea rows={3} maxLength={270} showCount />
+
         </Form.Item>
 
         {/* Items List */}
@@ -107,9 +124,19 @@ const WhyChooseForm = () => {
                   <Form.Item
                     name={[name, "description"]}
                     label="Item Description"
-                    rules={[{ required: true }]}
+                  rules={[
+                      { required: true, message: "Item description required" },
+                      {
+                        validator: (_, value) =>
+                          value && value.length > 50
+                            ? Promise.reject(
+                                "Item description cannot exceed 150 characters."
+                              )
+                            : Promise.resolve(),
+                      },
+                    ]}
                   >
-                    <Input />
+                    <Input.TextArea maxLength={50} showCount rows={2} />
                   </Form.Item>
                 </Card>
               ))}

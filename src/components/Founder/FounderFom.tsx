@@ -7,6 +7,11 @@ import { createFounder, updateFounder } from "../../store/slices/founderSlice";
 
 const { TextArea } = Input;
 
+const NAME_LIMIT = 50;
+  const TITLE_LIMIT = 70;
+  const DESCRIPTION_LIMIT = 320;
+
+
 const FounderForm: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,6 +49,21 @@ const FounderForm: React.FC = () => {
     e?.preventDefault();
     setLoading(true);
 
+    // Character Validation
+    if (name.length > NAME_LIMIT) {
+      setLoading(false);
+      return message.error(`Name cannot exceed ${NAME_LIMIT} characters.`);
+    }
+    if (title.length > TITLE_LIMIT) {
+      setLoading(false);
+      return message.error(`Title cannot exceed ${TITLE_LIMIT} characters.`);
+    }
+    if (description.length > DESCRIPTION_LIMIT) {
+      setLoading(false);
+      return message.error(`Description cannot exceed ${DESCRIPTION_LIMIT} characters.`);
+    }
+
+
     const formData = new FormData();
     formData.append("name", name);
     formData.append("title", title);
@@ -74,7 +94,7 @@ const FounderForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto bg-white p-6 rounded shadow mt-6">
+    <div className="max-w-5xl mx-auto bg-white p-4 rounded shadow mt-2">
       <Button icon={<ArrowLeft size={16} />} onClick={() => navigate(-1)} className="mb-4">
         Back
       </Button>
@@ -86,17 +106,20 @@ const FounderForm: React.FC = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="font-semibold block mb-1">Name</label>
-          <Input value={name} onChange={(e) => setName(e.target.value)} required />
+          <Input value={name} onChange={(e) => setName(e.target.value)}  maxLength={NAME_LIMIT}  required />
+          <p className="text-gray-500 text-sm">{name.length}/{NAME_LIMIT}</p>
         </div>
 
         <div>
           <label className="font-semibold block mb-1">Title</label>
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} required />
+          <Input value={title} onChange={(e) => setTitle(e.target.value)}  maxLength={TITLE_LIMIT} required />
+           <p className="text-gray-500 text-sm">{title.length}/{TITLE_LIMIT}</p>
         </div>
 
         <div>
           <label className="font-semibold block mb-1">Description</label>
-          <TextArea rows={6} value={description} onChange={(e) => setDescription(e.target.value)} required />
+          <TextArea rows={6} value={description} onChange={(e) => setDescription(e.target.value)} maxLength={DESCRIPTION_LIMIT} required />
+              <p className="text-gray-500 text-sm">{description.length}/{DESCRIPTION_LIMIT}</p>
         </div>
 
         <div>

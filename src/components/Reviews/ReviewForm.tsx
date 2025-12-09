@@ -39,6 +39,18 @@ const ReviewForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    if (name.length > 50) {
+      setLoading(false);
+      return message.error("Name cannot exceed 50 characters.");
+    }
+    if (title.length > 70) {
+      setLoading(false);
+      return message.error("Title cannot exceed 70 characters.");
+    }
+    if (description.length > 300) {
+      setLoading(false);
+      return message.error("Description cannot exceed 250 characters.");
+    }
 
     const formData = new FormData();
     formData.append("name", name);
@@ -94,6 +106,7 @@ const ReviewForm: React.FC = () => {
               onChange={(e) => setName(e.target.value)}
               required
             />
+             <p className="text-gray-500 text-sm">{name.length}/50</p>
           </div>
 
           {/* Title */}
@@ -106,6 +119,7 @@ const ReviewForm: React.FC = () => {
               onChange={(e) => setTitle(e.target.value)}
               required
             />
+             <p className="text-gray-500 text-sm">{title.length}/70</p>
           </div>
 
           {/* Description */}
@@ -117,6 +131,7 @@ const ReviewForm: React.FC = () => {
               onChange={(e) => setDescription(e.target.value)}
               required
             />
+            <p className="text-gray-500 text-sm">{description.length}/300</p>
           </div>
 
           {/* Image Upload */}

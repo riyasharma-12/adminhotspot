@@ -142,10 +142,13 @@ import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { fetchBlogs, deleteBlog } from "../../store/slices/blogSlice";
 import DOMPurify from "dompurify";
+import type { AppDispatch } from "../../store/store";
 
 const BlogList: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  
   const { blogs, loading } = useSelector((state: RootState) => state.blogs);
 
   useEffect(() => {
@@ -254,13 +257,13 @@ const BlogList: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Blogs</h1>
         <div className="flex gap-3">
-          <Button
+          {/* <Button
             type="primary"
             icon={<Plus size={16} />}
             onClick={() => navigate("/dashboard/categoryForm")}
           >
             Add Category
-          </Button>
+          </Button> */}
 
           <Button
             type="primary"
@@ -269,14 +272,22 @@ const BlogList: React.FC = () => {
           >
             Category List
           </Button>
-
-          <Button
+           
+              <Button
             type="primary"
             icon={<Plus size={16} />}
             onClick={() => navigate("/dashboard/blogForm")}
           >
             Create Blog
           </Button>
+
+          {/* <Button
+            type="primary"
+            icon={<Plus size={16} />}
+            onClick={() => navigate("/dashboard/blogForm")}
+          >
+            Create Blog
+          </Button> */}
         </div>
       </div>
 

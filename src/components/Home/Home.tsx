@@ -21,9 +21,9 @@ const Home: React.FC = () => {
 
   const stats = [
     {
-      title: "Total Users",
+      // title: "Total Users",
       value: users?.length,
-      icon: <UserOutlined className="text-3xl text-blue-500" />,
+      // icon: <UserOutlined className="text-3xl text-blue-500" />,
     },
     // {
     //   title: "Total Orders",
@@ -40,7 +40,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-      {stats.map((stat, index) => (
+      {/* {stats.map((stat, index) => (
         <motion.div
           key={index}
           initial={{ opacity: 0, y: 20 }}
@@ -54,7 +54,7 @@ const Home: React.FC = () => {
           </div>
           <div className="bg-gray-100 p-3 rounded-full">{stat.icon}</div>
         </motion.div>
-      ))}
+      ))} */}
     </div>
   );
 };

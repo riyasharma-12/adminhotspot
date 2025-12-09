@@ -111,20 +111,22 @@ const AboutList: React.FC = () => {
                 >
                     Show Founder
                 </Button>
-                <Button
+                {/* <Button
                     type="primary"
                     icon={<Plus size={16} />}
                     onClick={() => navigate("/dashboard/founderForm")}
                 >
                     Create Founder
-                </Button>
-                <Button
+                </Button> */}
+                {abouts.length === 0 && (
+                 <Button
                     type="primary"
                     icon={<Plus size={16} />}
                     onClick={() => navigate("/dashboard/aboutForm")}
                 >
                     Create About Page
-                </Button> 
+                </Button>    
+                )}
                 </div>
             </div>
 

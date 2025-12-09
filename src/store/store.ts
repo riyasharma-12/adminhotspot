@@ -13,6 +13,7 @@ import homeReducer from "./slices/homeSlice";
 import missionReducer from "./slices/missionSlice"
 import whyChooseReducer from "./slices/whychooseSlice"
 import productHeadingReducer from "./slices/productHeadingSlice"
+import benefitReducer from "./slices/benefitSlice"
 
 export const store = configureStore({
   reducer: {
@@ -29,7 +30,8 @@ export const store = configureStore({
     homes:homeReducer,
     mission:missionReducer,
     whyChoose:whyChooseReducer,
-    productHeading:productHeadingReducer
+    productHeading:productHeadingReducer,
+    benefits:benefitReducer
   },
 });
 

@@ -33,6 +33,8 @@ const ServiceList: React.FC = () => {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Services</h1>
+        {services.length === 0 && (
+                                    
         <Button
           type="primary"
           icon={<Plus size={16} />}
@@ -40,6 +42,7 @@ const ServiceList: React.FC = () => {
         >
           Create Service
         </Button>
+)}
       </div>
 
       {loading ? (
@@ -93,6 +96,7 @@ const ServiceList: React.FC = () => {
                     )}
                   </td>
                   <td className="p-3 flex justify-center gap-2">
+
                     <Button
                       icon={<Edit2 size={16} />}
                       onClick={() =>

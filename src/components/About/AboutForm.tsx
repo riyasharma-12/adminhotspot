@@ -42,6 +42,22 @@ const AboutForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    if (titleOne.length > 60) {
+      setLoading(false);
+      return message.error("Title One cannot exceed 60 characters.");
+    }
+    if (titleTwo.length > 60) {
+      setLoading(false);
+      return message.error("Title Two cannot exceed 60 characters.");
+    }
+    if (descriptionOne.length > 270) {
+      setLoading(false);
+      return message.error("Description One cannot exceed 300 characters.");
+    }
+    if (descriptionTwo.length > 270) {
+      setLoading(false);
+      return message.error("Description Two cannot exceed 300 characters.");
+    }
 
     const formData = new FormData();
     formData.append("titleOne", titleOne);
@@ -97,6 +113,7 @@ const AboutForm: React.FC = () => {
               onChange={(e) => setTitleOne(e.target.value)}
               required
             />
+             <p className="text-gray-500 text-sm">{titleOne.length}/60</p>
           </div>
 
           {/* Title Two */}
@@ -109,6 +126,7 @@ const AboutForm: React.FC = () => {
               onChange={(e) => setTitleTwo(e.target.value)}
               required
             />
+            <p className="text-gray-500 text-sm">{titleTwo.length}/60</p>
           </div>
 
           {/* Description One */}
@@ -120,6 +138,7 @@ const AboutForm: React.FC = () => {
               onChange={(e) => setDescriptionOne(e.target.value)}
               required
             />
+            <p className="text-gray-500 text-sm">{descriptionOne.length}/270</p>
           </div>
 
           {/* Description Two */}
@@ -131,6 +150,7 @@ const AboutForm: React.FC = () => {
               onChange={(e) => setDescriptionTwo(e.target.value)}
               required
             />
+            <p className="text-gray-500 text-sm">{descriptionOne.length}/270</p>
           </div>
 
           {/* Video Upload */}

@@ -99,6 +99,11 @@ const DashboardLayout: React.FC = () => {
                 icon: <FileQuestion size={18} />,
                 label: 'Home',
               },
+              {
+                key: '/dashboard/benefit',
+                icon: <FileQuestion size={18} />,
+                label: 'Claim360',
+              },
             ]}
 
           />

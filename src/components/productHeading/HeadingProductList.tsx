@@ -75,14 +75,16 @@ const ProductHeadingList = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Product Headings</h1>
-
-        <Button
+         
+         {headings.length === 0 && (
+           <Button
           type="primary"
           icon={<Plus size={16} />}
           onClick={() => navigate("/dashboard/productHeadingForm")}
         >
           Create Product Heading
         </Button>
+         )}
       </div>
 
       {/* Table */}

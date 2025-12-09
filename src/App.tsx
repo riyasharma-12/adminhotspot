@@ -35,6 +35,7 @@ import WhyChooseForm from "./components/whyChoose/WhyChooseForm";
 import WhyChooseList from "./components/whyChoose/WhyChooseList";
 import ProductHeadingForm from "./components/productHeading/HeadingProductForm";
 import ProductHeadingList from "./components/productHeading/HeadingProductList"
+import BenefitAdmin from "./components/Benefit/BenefitAdmin";
 
 
 function App() {
@@ -81,6 +82,7 @@ function App() {
             <Route path="whyChooseList" element={<WhyChooseList/>}></Route>
             <Route path="productHeadingForm" element={<ProductHeadingForm/>}></Route>
             <Route path="productHeading" element={<ProductHeadingList />}></Route>
+            <Route path="benefit" element={<BenefitAdmin />}></Route>
           </Route>
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>

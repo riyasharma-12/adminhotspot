@@ -1,5 +1,4 @@
 
-
 import React, { useEffect, useState } from "react";
 import { Table, Button, Space, message, Image, Drawer, List, Form, Input, Upload } from "antd";
 import { Edit2, Trash2, Plus, Eye, UploadCloud } from "lucide-react";
@@ -105,6 +104,13 @@ const ProductList: React.FC = () => {
       hide();
     }
   };
+  
+  const truncateHtml = (html: string, maxLength: number) => {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  const text = div.textContent || div.innerText || "";
+  return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+};
 
   const columns = [
     {
@@ -136,23 +142,32 @@ const ProductList: React.FC = () => {
     // },
 
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      render: (text: string) => (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(
-              text
-                ? text.length > 60
-                  ? text.slice(0, 60) + "..."
-                  : text
-                : ""
-            ),
-          }}
-        ></div>
-      ),
-    },
+  title: "Description",
+  dataIndex: "description",
+  key: "description",
+  render: (text: string) => (
+    <div>{truncateHtml(text, 60)}</div>
+  ),
+},
+
+    // {
+    //   title: "Description",
+    //   dataIndex: "description",
+    //   key: "description",
+    //   render: (text: string) => (
+    //     <div
+    //       dangerouslySetInnerHTML={{
+    //         __html: DOMPurify.sanitize(
+    //           text
+    //             ? text.length > 60
+    //               ? text.slice(0, 60) + "..."
+    //               : text
+    //             : ""
+    //         ),
+    //       }}
+    //     ></div>
+    //   ),
+    // },
 
     {
       title: "Updated At",
@@ -206,13 +221,16 @@ const ProductList: React.FC = () => {
         >
          Product Heading
         </Button>
-        <Button
+
+           <Button
           type="primary"
           icon={<Plus size={16} />}
           onClick={() => navigate("/dashboard/productsForm")}
         >
           Create Product
         </Button>
+         
+
         </div>
       </div>
 

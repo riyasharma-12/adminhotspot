@@ -46,13 +46,38 @@ export const createService = createAsyncThunk(
   }
 );
 
-export const updateService = createAsyncThunk(
+// export const updateService = createAsyncThunk(
+//   "services/update",
+//   async ({ id, formData }: { id: number; formData: FormData }) => {
+//     const data = await serviceApi.updateService(id, formData);
+//     return data.data as Service;
+//   }
+// );
+
+export const updateService = createAsyncThunk<
+  Service,
+  { id: number; formData: FormData },
+  { rejectValue: string }
+>(
   "services/update",
-  async ({ id, formData }: { id: number; formData: FormData }) => {
-    const data = await serviceApi.updateService(id, formData);
-    return data.data as Service;
+  async ({ id, formData }, { rejectWithValue }) => {
+    try {
+      const res = await serviceApi.updateService(id, formData);
+
+      if (res.success === false) {
+        return rejectWithValue(res.message);
+      }
+
+      return res.data as Service;
+    } catch (err: any) {
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to update service"
+      );
+    }
   }
 );
+
+
 
 export const deleteService = createAsyncThunk(
   "services/delete",
@@ -93,7 +118,7 @@ const serviceSlice = createSlice({
       })
       .addCase(createService.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Failed to create service";
+        state.error = (action.payload as string) || "Failed to create service";
       })
 
       // UPDATE
@@ -108,7 +133,7 @@ const serviceSlice = createSlice({
       })
       .addCase(updateService.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Failed to update service";
+        state.error = action.payload ?? "Failed to update service";
       })
 
       // DELETE

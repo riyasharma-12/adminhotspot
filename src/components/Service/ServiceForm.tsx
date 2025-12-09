@@ -43,6 +43,9 @@ const ServiceForm: React.FC = () => {
 
   // Add new empty item
   const handleAddItem = () => {
+    if (items.length >= 5) {
+    return message.error("You can add maximum 5 service items.");
+  }
     setItems([...items, { title: "", description: "", image: [] }]);
   };
 
@@ -56,6 +59,23 @@ const ServiceForm: React.FC = () => {
   // Submit form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (items.length > 5) {
+  return message.error("A service cannot have more than 5 items.");
+}
+
+   
+    if (heading.length > 250) {
+      return message.error("Heading cannot exceed 70 characters.");
+    }
+
+    for (let item of items) {
+      if (item.title.length > 50) {
+        return message.error("Item title cannot exceed 50 characters.");
+      }
+      if (item.description.length > 200) {
+        return message.error("Item description cannot exceed 200 characters.");
+      }
+    }
 
     const formData = new FormData();
     formData.append("heading", heading);
@@ -96,7 +116,7 @@ const ServiceForm: React.FC = () => {
 
       navigate("/dashboard/services");
     } catch (error: any) {
-      message.error(error?.message || "Failed to save service");
+      message.error(error || "Failed to save service");
     }
   };
 
@@ -122,6 +142,8 @@ const ServiceForm: React.FC = () => {
             onChange={(e) => setHeading(e.target.value)}
             required
             className="rounded-lg"
+            maxLength={250}
+            showCount
           />
         </div>
 
@@ -139,6 +161,8 @@ const ServiceForm: React.FC = () => {
                 handleItemChange(index, "title", e.target.value)
               }
               required
+               maxLength={50}
+            showCount
             />
 
             <Input.TextArea
@@ -148,6 +172,8 @@ const ServiceForm: React.FC = () => {
                 handleItemChange(index, "description", e.target.value)
               }
               rows={3}
+               maxLength={200}
+            showCount
               required
             />
 

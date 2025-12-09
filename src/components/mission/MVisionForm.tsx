@@ -84,14 +84,19 @@ const handleSubmit = async () => {
   if (!heading.trim()) return message.error("Heading is required.");
 
   if (!description.trim()) return message.error("Description is required.");
-
+   if (heading.length > 60) {
+      return message.error("Heading cannot exceed 100 characters.");
+    }
   //  Character limit validation
-  if (description.length > 400) {
+  if (description.length > 250) {
     return message.error("Description cannot exceed 400 characters.");
   }
 
   // Validate each item description
   for (const item of items) {
+    if (item.title.length > 60) {
+        return message.error("Item title cannot exceed 80 characters.");
+      }
     if (item.description.length > 300) {
       return message.error("Item description cannot exceed 300 characters.");
     }
@@ -123,17 +128,25 @@ const handleSubmit = async () => {
       <label className="font-medium">Heading</label>
       <Input
         value={heading}
+        maxLength={60}
         onChange={(e) => setHeading(e.target.value)}
-        className="mb-3"
+        className="mb-3"      
       />
+      <p className="text-right text-xs text-gray-500 mb-3">
+      {heading.length}/60
+    </p>
 
       <label className="font-medium">Description</label>
       <Input.TextArea
         rows={4}
+        maxLength={250} 
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         className="mb-4"
       />
+      <p className="text-right text-xs text-gray-500 mb-4">
+      {description.length}/250
+    </p>
 
       <h3 className="font-semibold mb-2">Items</h3>
 
@@ -142,16 +155,24 @@ const handleSubmit = async () => {
           <label className="font-medium">Title</label>
           <Input
             value={item.title}
+            maxLength={60}
             onChange={(e) => updateItem(index, "title", e.target.value)}
             className="mb-2"
           />
+           <p className="text-right text-xs text-gray-500 mb-2">
+          {item.title.length}/60
+        </p>
 
           <label className="font-medium">Description</label>
           <Input.TextArea
             rows={2}
+            maxLength={300} 
             value={item.description}
             onChange={(e) => updateItem(index, "description", e.target.value)}
           />
+          <p className="text-right text-xs text-gray-500">
+          {item.description.length}/300
+        </p>
 
           {items.length > 1 && (
             <Button

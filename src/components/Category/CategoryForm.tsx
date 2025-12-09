@@ -57,9 +57,18 @@ const CategoryForm: React.FC = () => {
           <Form.Item
             name="name"
             label="Category Name"
-            rules={[{ required: true, message: "Enter category name" }]}
+            // rules={[{ required: true, message: "Enter category name" }]}
+            rules={[
+              { required: true, message: "Enter title" },
+              {
+                validator: (_, value) =>
+                  value && value.length > 70
+                    ? Promise.reject("Title cannot exceed 100 characters.")
+                    : Promise.resolve(),
+              },
+            ]}
           >
-            <Input placeholder="Category name" />
+            <Input maxLength={70} showCount />
           </Form.Item>
 
           <Form.Item className="mt-4">

@@ -472,6 +472,38 @@ export const productHeadingService = {
 };
 
 
+export const benefitService = {
+  // Get all benefits
+  getBenefits: async () => {
+    const response = await api.get("/api/benefit/");
+    return response.data;
+  },
+
+  // Get benefit by ID
+  getBenefitById: async (id: number) => {
+    const response = await api.get(`/api/benefit/${id}`);
+    return response.data;
+  },
+
+  // Create benefit
+  createBenefit: async (data: { heading: string; description: string; items: { title: string; description: string }[] }) => {
+    const response = await api.post("/api/benefit/", data);
+    return response.data;
+  },
+
+  // Update benefit
+  updateBenefit: async (id: number, data: { heading: string; description: string; items: { id?: number; title: string; description: string }[] }) => {
+    const response = await api.put(`api/benefit/${id}`, data);
+    return response.data;
+  },
+
+  // Delete benefit
+  deleteBenefit: async (id: number) => {
+    const response = await api.delete(`api/benefit/${id}`);
+    return response.data;
+  },
+};
+
 
 
 
