@@ -504,7 +504,81 @@ export const benefitService = {
   },
 };
 
+export const faqService = {
+  getAll: async () => {
+    const res = await api.get("/api/faq");
+    return res.data;
+  },
 
+  getById: async (id: number) => {
+    const res = await api.get(`/api/faq/${id}`);
+    return res.data;
+  },
+
+  create: async (faq: any) => {
+    const res = await api.post("/api/faq", faq);
+    return res.data;
+  },
+
+  update: async (id: number, faq: any) => {
+    const res = await api.patch(`/api/faq/${id}`, faq);
+    return res.data;
+  },
+
+  delete: async (id: number) => {
+    const res = await api.delete(`/api/faq/${id}`);
+    return res.data;
+  },
+};
+
+export const planService = {
+  // Get all plans
+  getPlans: async () => {
+    const response = await api.get("/api/plan");
+    return response.data;
+  },
+
+  // Get single plan by ID
+  getPlanById: async (id: number | string) => {
+    const response = await api.get(`/api/plan/${id}`);
+    return response.data;
+  },
+
+  // Create a new plan
+  createPlan: async (data: {
+    name: string;
+    price: number;
+    priceType: string;
+    isPopular: boolean;
+    buttonText: string;
+    features: string[];
+  }) => {
+    const response = await api.post("/api/plan/", data);
+    return response.data;
+  },
+
+  // Update plan
+  updatePlan: async (
+    id: number | string,
+    data: {
+      name?: string;
+      price?: number;
+      priceType?: string;
+      isPopular?: boolean;
+      buttonText?: string;
+      features?: string[];
+    }
+  ) => {
+    const response = await api.patch(`/api/plan/update/${id}`, data);
+    return response.data;
+  },
+
+  // Delete a plan
+  deletePlan: async (id: number | string) => {
+    const response = await api.delete(`/api/plan/delete/${id}`);
+    return response.data;
+  },
+};
 
 
 

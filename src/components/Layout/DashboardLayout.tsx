@@ -84,11 +84,11 @@ const DashboardLayout: React.FC = () => {
                 icon: <FileQuestion size={18} />,
                 label: 'About',
               },
-              {
-                key: '/dashboard/reviews',
-                icon: <FileQuestion size={18} />,
-                label: 'Reviews',
-              },
+              // {
+              //   key: '/dashboard/reviews',
+              //   icon: <FileQuestion size={18} />,
+              //   label: 'Reviews',
+              // },
              {
                 key: '/dashboard/services',
                 icon: <FileQuestion size={18} />,

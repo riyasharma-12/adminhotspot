@@ -14,6 +14,8 @@ import missionReducer from "./slices/missionSlice"
 import whyChooseReducer from "./slices/whychooseSlice"
 import productHeadingReducer from "./slices/productHeadingSlice"
 import benefitReducer from "./slices/benefitSlice"
+import faqReducer from "./slices/faqSlice";
+import planReducer from "./slices/planSlice"
 
 export const store = configureStore({
   reducer: {
@@ -31,7 +33,9 @@ export const store = configureStore({
     mission:missionReducer,
     whyChoose:whyChooseReducer,
     productHeading:productHeadingReducer,
-    benefits:benefitReducer
+    benefits:benefitReducer,
+    faq:faqReducer,
+    plans:planReducer
   },
 });
 

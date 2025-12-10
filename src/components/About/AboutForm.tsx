@@ -50,11 +50,11 @@ const AboutForm: React.FC = () => {
       setLoading(false);
       return message.error("Title Two cannot exceed 60 characters.");
     }
-    if (descriptionOne.length > 270) {
+    if (descriptionOne.length > 300) {
       setLoading(false);
       return message.error("Description One cannot exceed 300 characters.");
     }
-    if (descriptionTwo.length > 270) {
+    if (descriptionTwo.length > 300) {
       setLoading(false);
       return message.error("Description Two cannot exceed 300 characters.");
     }

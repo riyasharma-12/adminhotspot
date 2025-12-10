@@ -63,7 +63,7 @@ const WhyChooseForm = () => {
     }
 
     form.resetFields();
-    navigate("/dashboard/whyChooseList");
+    navigate("/dashboard/homes");
   };
 
   return (

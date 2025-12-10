@@ -85,7 +85,7 @@ const FounderForm: React.FC = () => {
         await dispatch(createFounder(formData)).unwrap();
         message.success("Founder created");
       }
-      navigate("/dashboard/founderList");
+      navigate("/dashboard/abouts");
     } catch (err: any) {
       message.error(err?.message || "Failed");
     } finally {

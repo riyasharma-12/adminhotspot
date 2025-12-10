@@ -113,7 +113,7 @@ const handleSubmit = async () => {
       message.success("Created Successfully");
     }
 
-    navigate("/dashboard/mission");
+    navigate("/dashboard/homes");
   } catch {
     message.error("Something went wrong.");
   }

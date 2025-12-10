@@ -70,7 +70,7 @@ const ReviewForm: React.FC = () => {
         message.success("Review created successfully");
       }
 
-      navigate("/dashboard/reviews");
+      navigate("/dashboard/homes");
     } catch (error) {
       console.error("Save failed:", error);
       message.error("Failed to save review");

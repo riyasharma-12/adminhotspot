@@ -4,11 +4,10 @@ import { RootState } from "../../store/store";
 import { fetchBenefits, createBenefit, updateBenefit, deleteBenefit, } from "../../store/slices/benefitSlice";
 import { List, Button, Drawer, Form, Input, Popconfirm, message, } from "antd";
 import { Plus, Edit2, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 import type { AppDispatch, } from "../../store/store";
-
-
-
 
 interface BenefitItemForm {
   title: string;
@@ -108,13 +107,33 @@ const dispatch = useDispatch<AppDispatch>();
     message.success("Benefit deleted successfully");
   };
 
+  const navigate = useNavigate();
+
   return (
+    
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Benefits</h1>
+        <div className="flex gap-2">
+             {/* <Button
+                  type="primary"
+                  icon={<Plus size={16} />}
+                  onClick={() => navigate("/dashboard/planList")}
+                >
+                 List Plan
+                </Button> */}
+           <Button
+                  type="primary"
+                  icon={<Plus size={16} />}
+                  onClick={() => navigate("/dashboard/faqList")}
+                >
+                 List Faq
+                </Button>
+    
         <Button type="primary" icon={<Plus size={16} />} onClick={() => openDrawer()}>
           Add Benefit
         </Button>
+        </div>
       </div>
 
       {loading ? (
@@ -124,41 +143,102 @@ const dispatch = useDispatch<AppDispatch>();
       ) : benefits.length === 0 ? (
         <p>No benefits found.</p>
       ) : (
+        // <List
+        //   dataSource={benefits}
+        //   renderItem={(benefit) => (
+        //     <List.Item
+        //       actions={[
+        //         <Button key="edit" icon={<Edit2 size={14} />} onClick={() => openDrawer(benefit)}>
+        //           Edit
+        //         </Button>,
+        //         <Popconfirm
+        //           key="delete"
+        //           title="Are you sure you want to delete this benefit?"
+        //           onConfirm={() => handleDelete(benefit.id)}
+        //           okText="Yes"
+        //           cancelText="No"
+        //         >
+        //           <Button danger icon={<Trash2 size={14} />}>
+        //             Delete
+        //           </Button>
+        //         </Popconfirm>,
+        //       ]}
+        //     >
+        //       <List.Item.Meta
+        //         title={benefit.heading}
+        //         description={benefit.description}
+        //       />
+        //       <div>
+        //         {benefit.items.map((item: any, index: number) => (
+        //           <div key={index} className="ml-4">
+        //             <strong>{item.title}:</strong> {item.description}
+        //           </div>
+        //         ))}
+        //       </div>
+        //     </List.Item>
+        //   )}
+        // />
+
         <List
-          dataSource={benefits}
-          renderItem={(benefit) => (
-            <List.Item
-              actions={[
-                <Button key="edit" icon={<Edit2 size={14} />} onClick={() => openDrawer(benefit)}>
-                  Edit
-                </Button>,
-                <Popconfirm
-                  key="delete"
-                  title="Are you sure you want to delete this benefit?"
-                  onConfirm={() => handleDelete(benefit.id)}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <Button danger icon={<Trash2 size={14} />}>
-                    Delete
-                  </Button>
-                </Popconfirm>,
-              ]}
+  dataSource={benefits}
+  renderItem={(benefit) => (
+    <div className="bg-white p-5 rounded-xl shadow-md mb-4 border border-gray-200">
+      <div className="flex justify-between items-start">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-900">
+            {benefit.heading}
+          </h2>
+          <p className="text-gray-600 mt-1">{benefit.description}</p>
+        </div>
+
+        <div className="flex gap-2">
+          <Button
+            key="edit"
+            type="primary"
+            icon={<Edit2 size={14} />}
+            onClick={() => openDrawer(benefit)}
+          >
+            Edit
+          </Button>
+
+          <Popconfirm
+            key="delete"
+            title="Are you sure you want to delete this benefit?"
+            onConfirm={() => handleDelete(benefit.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button danger icon={<Trash2 size={14} />}>
+              Delete
+            </Button>
+          </Popconfirm>
+        </div>
+      </div>
+
+      {/* Items */}
+      <div className="mt-4">
+        <h3 className="text-sm font-semibold text-gray-800 mb-2">Items</h3>
+
+        <ul className="space-y-2">
+          {benefit.items.map((item: any, index: number) => (
+            <li
+              key={index}
+              className="flex gap-2 items-start bg-gray-50 p-3 rounded-lg border border-gray-200"
             >
-              <List.Item.Meta
-                title={benefit.heading}
-                description={benefit.description}
-              />
+              <div className="mt-1 w-2 h-2 bg-blue-600 rounded-full"></div>
+
               <div>
-                {benefit.items.map((item: any, index: number) => (
-                  <div key={index} className="ml-4">
-                    <strong>{item.title}:</strong> {item.description}
-                  </div>
-                ))}
+                <p className="font-medium text-gray-900">{item.title}</p>
+                <p className="text-gray-600 text-sm">{item.description}</p>
               </div>
-            </List.Item>
-          )}
-        />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )}
+/>
+
       )}
 
       {/* Drawer Form */}
@@ -204,7 +284,7 @@ const dispatch = useDispatch<AppDispatch>();
                 />
                 <Input
                   placeholder="Description"
-                   maxLength={270}  // LIMIT 80 characters
+                   maxLength={150}  // LIMIT 80 characters
                    showCount
                   value={item.description}
                   onChange={(e) => handleItemChange(index, "description", e.target.value)}

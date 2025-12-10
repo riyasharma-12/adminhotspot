@@ -36,7 +36,10 @@ import WhyChooseList from "./components/whyChoose/WhyChooseList";
 import ProductHeadingForm from "./components/productHeading/HeadingProductForm";
 import ProductHeadingList from "./components/productHeading/HeadingProductList"
 import BenefitAdmin from "./components/Benefit/BenefitAdmin";
-
+import FAQForm from "./components/faq/FaqForm";
+import FAQList from "./components/faq/FaqList";
+// import PlanForm from "./components/plan/PlanForm";
+// import PlanList from "./components/plan/PlanList"
 
 function App() {
   return (
@@ -83,6 +86,10 @@ function App() {
             <Route path="productHeadingForm" element={<ProductHeadingForm/>}></Route>
             <Route path="productHeading" element={<ProductHeadingList />}></Route>
             <Route path="benefit" element={<BenefitAdmin />}></Route>
+            <Route path="faq" element={<FAQForm/>}></Route>
+            <Route path="faqList" element={<FAQList/>}></Route>
+            {/* <Route path="plan" element={<PlanForm/>}></Route>
+            <Route path="planList" element={<PlanList/>}></Route> */}
           </Route>
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
