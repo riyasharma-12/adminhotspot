@@ -1,75 +1,78 @@
-
 import React, { useEffect, useState } from "react";
-import { Input, Button, Form, message, Upload } from "antd";
+import { Form, Input, Button, Select, Upload, message } from "antd";
+import { UploadOutlined,  } from "@ant-design/icons";
 import { ArrowLeft, UploadCloud } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useDispatch } from "react-redux";
-import { createProduct, updateProduct } from "../../store/slices/productSlice";
+
+import {
+  createProduct,
+  updateProduct,
+} from "../../store/slices/productSlice";
+import { fetchSubCategories } from "../../store/slices/subCategorySlice";
+import type { RootState, AppDispatch } from "../../store/store";
 
 const ProductForm: React.FC = () => {
-
-  // ADD THIS AT TOP
-const TITLE_LIMIT = 100;
-const DESCRIPTION_LIMIT = 320;
-
+  const [form] = Form.useForm();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch<any>();
 
   const product = location.state?.product;
-  // const [description, setDescription] = useState(product?.description || "");
-  const [form] = Form.useForm();
+  const isEdit = Boolean(product);
+
+  const { subCategories } = useSelector(
+    (state: RootState) => state.subCategories
+  );
+
   const [fileList, setFileList] = useState<any[]>([]);
 
-  // Load existing data on edit
   useEffect(() => {
+    dispatch(fetchSubCategories(undefined));
+
     if (product) {
       form.setFieldsValue({
         title: product.title,
         description: product.description,
+        price: product.price,
+        subCategoryId: product.subCategoryId,
       });
 
       if (product.image) {
         setFileList([
           {
             uid: "-1",
-            name: product.image.split("/").pop(),
+            name: "image",
             status: "done",
             url: product.image,
           },
         ]);
       }
     }
-  }, [product, form]);
+  }, [dispatch, product, form]);
 
-  const handleGoBack = () => navigate("/dashboard/products");
-
-  const handleSubmit = async (values: any) => {
-  
-
-    if (fileList.length === 0 && !product?.image) {
-      message.error("Please upload a product image");
+  const onFinish = async (values: any) => {
+    if (!isEdit && fileList.length === 0) {
+      message.error("Product image is required");
       return;
     }
-
-    const hide = message.loading(product ? "Updating..." : "Creating...", 0);
 
     try {
       const formData = new FormData();
       formData.append("title", values.title);
-      formData.append("description", values.description); // FIXED ✔
+      formData.append("description", values.description);
+      formData.append("price", values.price);
+      formData.append("subCategoryId", values.subCategoryId);
 
       if (fileList[0]?.originFileObj) {
         formData.append("image", fileList[0].originFileObj);
-      } else if (product?.image) {
-        formData.append("image", product.image);
       }
 
-      if (product) {
+      if (isEdit) {
         await dispatch(
-          updateProduct({ id: product.id.toString(), product: formData })
+          updateProduct({ id: product.id, data: formData })
         ).unwrap();
         message.success("Product updated successfully");
       } else {
@@ -77,13 +80,9 @@ const DESCRIPTION_LIMIT = 320;
         message.success("Product created successfully");
       }
 
-      form.resetFields();
-      setFileList([]);
       navigate("/dashboard/products");
     } catch (error: any) {
-      message.error(error || "Failed to save product");
-    } finally {
-      hide();
+      message.error("Failed to save product");
     }
   };
 
@@ -91,74 +90,75 @@ const DESCRIPTION_LIMIT = 320;
     <>
       <Button
         className="mb-4"
-        onClick={handleGoBack}
-        icon={<ArrowLeft size={16} />}
+        icon={<ArrowLeft />}
+        onClick={() => navigate("/dashboard/products")}
       >
         Go Back
       </Button>
 
-      <div className="p-6 bg-white rounded-lg shadow">
-        <h1 className="text-2xl font-semibold mb-4">
-          {product ? "Edit Product" : "Add New Product"}
-        </h1>
+      <div className="bg-white p-6 rounded-lg shadow max-w-xl ">
+        <h2 className="text-xl font-semibold mb-4">
+          {isEdit ? "Edit Product" : "Add Product"}
+        </h2>
 
-        <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          {/* <Form.Item
+        <Form layout="vertical" form={form} onFinish={onFinish}>
+          <Form.Item
             name="title"
             label="Product Title"
             rules={[{ required: true, message: "Enter product title" }]}
           >
             <Input placeholder="Enter product title" />
-          </Form.Item> */}
-           <Form.Item
-    name="title"
-    label={`Product Title `}
-    rules={[
-      { required: true, message: "Enter product title" },
-      {
-        max: TITLE_LIMIT,
-        message: `Title cannot exceed ${TITLE_LIMIT} characters.`,
-      },
-    ]}
-  >
-    <Input
-      placeholder="Enter product title"
-      onChange={(e) => {
-        if (e.target.value.length <= TITLE_LIMIT) {
-          form.setFieldsValue({ title: e.target.value });
-        }
-      }}
-    />
-  </Form.Item>
+          </Form.Item>
+
+          {/* ✅ REACT QUILL DESCRIPTION */}
+          <Form.Item
+            name="description"
+            label="Description"
+            rules={[{ required: true, message: "Enter product description" }]}
+            getValueFromEvent={(content) => content}
+          >
+            <ReactQuill theme="snow" style={{ height: 200 }} />
+          </Form.Item>
+
+          <Form.Item
+            name="price"
+            label="Price"
+            rules={[{ required: true, message: "Enter price" }]}
+          >
+            <Input type="number" placeholder="Enter price" />
+          </Form.Item>
+
+          <Form.Item
+            name="subCategoryId"
+            label="SubCategory"
+            rules={[{ required: true, message: "Select subcategory" }]}
+          >
+            <Select placeholder="Select subcategory">
+              {subCategories.map((s) => (
+                <Select.Option key={s.id} value={s.id}>
+                  {s.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+
           <Form.Item label="Product Image">
             <Upload
-              fileList={fileList}
-              onChange={({ fileList }) => setFileList(fileList)}
               beforeUpload={() => false}
               listType="picture"
               maxCount={1}
+              fileList={fileList}
+              onChange={({ fileList }) => setFileList(fileList)}
             >
-              <Button icon={<UploadCloud size={16} />}>
-                {fileList.length > 0 ? "Change Image" : "Upload Image"}
+              <Button icon={<UploadOutlined />}>
+                {fileList.length ? "Change Image" : "Upload Image"}
               </Button>
             </Upload>
           </Form.Item>
 
-          {/* FIXED: ReactQuill Connected to Antd Form */}
-            <Form.Item
-            name="description"
-            label="Description"
-            rules={[{ required: true, message: "Enter product description" }]}
-            getValueFromEvent={(content) => content} // REQUIRED ✔
-          >
-            <ReactQuill theme="snow" style={{ height: "200px" }} />
-          </Form.Item>   
-           
-          <Form.Item className="mt-4">
-            <Button type="primary" htmlType="submit">
-              {product ? "Update Product" : "Create Product"}
-            </Button>
-          </Form.Item>
+          <Button type="primary" htmlType="submit">
+            {isEdit ? "Update Product" : "Create Product"}
+          </Button>
         </Form>
       </div>
     </>
@@ -166,5 +166,3 @@ const DESCRIPTION_LIMIT = 320;
 };
 
 export default ProductForm;
-
-

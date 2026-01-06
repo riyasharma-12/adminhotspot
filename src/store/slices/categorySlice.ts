@@ -1,138 +1,93 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { categoryService } from "../../services/api"; // implement API calls like featureService
+import { categoryService } from "../../services/api";
 
-// Category interface
 interface Category {
-  id: number;
+  id: string;
   name: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
-// Slice state type
 interface CategoryState {
   categories: Category[];
-  selectedCategory: Category | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: CategoryState = {
   categories: [],
-  selectedCategory: null,
   loading: false,
   error: null,
 };
 
-// ===== Async Thunks =====
-
-// Fetch all categories
 export const fetchCategories = createAsyncThunk(
-  "categories/fetchCategories",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await categoryService.getCategories();
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to fetch categories");
-    }
+  "category/fetchCategories",
+  async (params?: any) => {
+    return await categoryService.getCategories(params);
   }
 );
 
-// Create category
 export const createCategory = createAsyncThunk(
-  "categories/createCategory",
-  async (name: string, { rejectWithValue }) => {
-    try {
-      const response = await categoryService.createCategory({ name });
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to create category");
-    }
+  "category/createCategory",
+  async (payload: { name: string }) => {
+    return await categoryService.createCategory(payload);
   }
 );
 
-// Update category
 export const updateCategory = createAsyncThunk(
-  "categories/updateCategory",
-  async ({ id, name }: { id: number; name: string }, { rejectWithValue }) => {
-    try {
-      const response = await categoryService.updateCategory(id, { name });
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to update category");
-    }
+  "category/updateCategory",
+  async ({ id, data }: { id: string; data: { name: string } }) => {
+    return await categoryService.updateCategory(id, data);
   }
 );
 
-// Delete category
 export const deleteCategory = createAsyncThunk(
-  "categories/deleteCategory",
-  async (id: number, { rejectWithValue }) => {
-    try {
-      const response = await categoryService.deleteCategory(id);
-      return { id, ...response.data };
-    } catch (error: any) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to delete category");
-    }
+  "category/deleteCategory",
+  async (id: string) => {
+    await categoryService.deleteCategory(id);
+    return id;
   }
 );
 
-// ===== Slice =====
 const categorySlice = createSlice({
-  name: "categories",
+  name: "category",
   initialState,
-  reducers: {
-    clearSelectedCategory: (state) => {
-      state.selectedCategory = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      // Fetch
+      // FETCH
       .addCase(fetchCategories.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.loading = false;
-        state.categories = action.payload;
+        state.categories = action.payload.data;
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.error.message || "Failed to fetch categories";
       })
 
-      // Create
+      // CREATE
       .addCase(createCategory.fulfilled, (state, action) => {
-        state.categories.push(action.payload);
-      })
-      .addCase(createCategory.rejected, (state, action) => {
-        state.error = action.payload as string;
+        state.categories.push(action.payload.data);
       })
 
-      // Update
+      // UPDATE
       .addCase(updateCategory.fulfilled, (state, action) => {
-        const updated = action.payload;
-        state.categories = state.categories.map((c) =>
-          c.id === updated.id ? updated : c
+        const index = state.categories.findIndex(
+          (c) => c.id === action.payload.data.id
         );
-      })
-      .addCase(updateCategory.rejected, (state, action) => {
-        state.error = action.payload as string;
+        if (index !== -1) {
+          state.categories[index] = action.payload.data;
+        }
       })
 
-      // Delete
+      // DELETE
       .addCase(deleteCategory.fulfilled, (state, action) => {
         state.categories = state.categories.filter(
-          (c) => c.id !== action.payload.id
+          (c) => c.id !== action.payload
         );
-      })
-      .addCase(deleteCategory.rejected, (state, action) => {
-        state.error = action.payload as string;
       });
   },
 });
 
-export const { clearSelectedCategory } = categorySlice.actions;
 export default categorySlice.reducer;

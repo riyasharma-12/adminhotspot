@@ -53,57 +53,23 @@ const DashboardLayout: React.FC = () => {
                 icon: <LayoutDashboard size={18} />,
                 label: 'Dashboard',
               },
-              // {
-              //   key: '/dashboard/users',
-              //   icon: <Users size={18} />,
-              //   label: 'Users',
-              // },
-             
+
               {
-                key: '/dashboard/pages',
-                icon: <FileText size={18} />,
-                label: 'Pages',
+                key: '/Dashboard/categories',
+                icon: <LayoutDashboard size={18} />,
+                label: 'category',
               },
               {
-                key: '/dashboard/queries',
-                icon: <FileQuestion size={18} />,
-                label: 'Queries',
-              },
-             {
-                key: '/dashboard/products',
-                icon: <FileQuestion size={18} />,
-                label: 'Product',
+                key: '/Dashboard/subcategories',
+                icon: <LayoutDashboard size={18} />,
+                label: 'SubCategory',
               },
               {
-                key: '/dashboard/blogs',
-                icon: <FileQuestion size={18} />,
-                label: 'Blog',
+                key: '/Dashboard/products',
+                icon: <LayoutDashboard size={18} />,
+                label: 'Products',
               },
-              {
-                key: '/dashboard/abouts',
-                icon: <FileQuestion size={18} />,
-                label: 'About',
-              },
-              // {
-              //   key: '/dashboard/reviews',
-              //   icon: <FileQuestion size={18} />,
-              //   label: 'Reviews',
-              // },
-             {
-                key: '/dashboard/services',
-                icon: <FileQuestion size={18} />,
-                label: 'Services',
-              },
-              {
-                key: '/dashboard/homes',
-                icon: <FileQuestion size={18} />,
-                label: 'Home',
-              },
-              {
-                key: '/dashboard/benefit',
-                icon: <FileQuestion size={18} />,
-                label: 'Claim360',
-              },
+
             ]}
 
           />

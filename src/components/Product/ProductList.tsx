@@ -1,132 +1,39 @@
-
-import React, { useEffect, useState } from "react";
-import { Table, Button, Space, message, Image, Drawer, List, Form, Input, Upload } from "antd";
-import { Edit2, Trash2, Plus, Eye, UploadCloud } from "lucide-react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store/store";
+import React, { useEffect } from "react";
+import { Table, Button, Image, Popconfirm, message } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchProducts } from "../../store/slices/productSlice";
-import { productService } from "../../services/api";
-import { featureService } from "../../services/api";
+import { fetchProducts, deleteProduct } from "../../store/slices/productSlice";
+import type { RootState, AppDispatch } from "../../store/store";
 import DOMPurify from "dompurify";
 
-
 const ProductList: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { products, loading } = useSelector((state: RootState) => state.products);
 
-  const [drawerVisible, setDrawerVisible] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [features, setFeatures] = useState<any[]>([]);
-  const [featureLoading, setFeatureLoading] = useState(false);
-
-  const [featureForm] = Form.useForm();
-  const [fileList, setFileList] = useState<any[]>([]);
+  const { products, loading } = useSelector(
+    (state: RootState) => state.products
+  );
 
   useEffect(() => {
-    dispatch(fetchProducts() as any);
+    dispatch(fetchProducts(undefined));
   }, [dispatch]);
 
-  // Open Features Drawer
-  const openDrawer = async (product: any) => {
-    setSelectedProduct(product);
-    setDrawerVisible(true);
-    setFeatureLoading(true);
+  const handleDelete = async (id: string) => {
     try {
-      const response = await featureService.getFeaturesByProduct(product.id);
-      setFeatures(response.data || []);
-    } catch (error) {
-      message.error("Failed to fetch features");
-    } finally {
-      setFeatureLoading(false);
+      await dispatch(deleteProduct(id)).unwrap();
+      message.success("Product deleted successfully");
+    } catch {
+      message.error("Failed to delete product");
     }
   };
-
-  // Add a Feature
-  const addFeature = async (values: any) => {
-    if (fileList.length === 0) {
-      message.error("Please upload an image for the feature");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("title", values.title);
-    formData.append("description", values.description);
-    formData.append("productId", selectedProduct.id.toString());
-    formData.append("image", fileList[0].originFileObj);
-
-    const hide = message.loading("Adding feature...", 0);
-    try {
-      const response = await featureService.createFeature(formData);
-      message.success(response.message || "Feature added successfully");
-
-      // Refresh feature list
-      const featuresResp = await featureService.getFeaturesByProduct(selectedProduct.id);
-      setFeatures(featuresResp.data || []);
-
-      featureForm.resetFields();
-      setFileList([]);
-    } catch (error: any) {
-      message.error(error?.response?.data?.message || "Failed to add feature");
-    } finally {
-      hide();
-    }
-  };
-
-  // Delete Product
-  const handleDeleteProduct = async (productId: number) => {
-    const hide = message.loading("Deleting product...", 0);
-    try {
-      const response = await productService.deleteProduct(productId.toString());
-      message.success(response.message || "Product deleted successfully");
-      dispatch(fetchProducts() as any);
-    } catch (error: any) {
-      message.error(error?.response?.data?.message || "Failed to delete product");
-    } finally {
-      hide();
-    }
-  };
-
-  // Delete Feature
-  const handleDeleteFeature = async (featureId: number) => {
-    const hide = message.loading("Deleting feature...", 0);
-    try {
-      await featureService.deleteFeature(featureId);
-      message.success("Feature deleted successfully");
-
-      // Refresh feature list
-      const featuresResp = await featureService.getFeaturesByProduct(selectedProduct.id);
-      setFeatures(featuresResp.data || []);
-    } catch (error: any) {
-      message.error(error?.response?.data?.message || "Failed to delete feature");
-    } finally {
-      hide();
-    }
-  };
-  
-  const truncateHtml = (html: string, maxLength: number) => {
-  const div = document.createElement("div");
-  div.innerHTML = html;
-  const text = div.textContent || div.innerText || "";
-  return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
-};
 
   const columns = [
     {
       title: "Image",
       dataIndex: "image",
       key: "image",
-      render: (url: string) => (
-        <Image
-          src={url}
-          alt="product"
-          width={70}
-          height={70}
-          style={{ borderRadius: 8, objectFit: "cover" }}
-          preview={false}
-        />
-      ),
+      render: (image: string) =>
+        image ? <Image width={60} src={image} /> : "No Image",
     },
     {
       title: "Title",
@@ -137,208 +44,85 @@ const ProductList: React.FC = () => {
     //   title: "Description",
     //   dataIndex: "description",
     //   key: "description",
-    //   render: (text: string) =>
-    //     text?.length > 60 ? text.slice(0, 60) + "..." : text,
+    //   ellipsis: true,
     // },
 
     {
-  title: "Description",
-  dataIndex: "description",
-  key: "description",
-  render: (text: string) => (
-    <div>{truncateHtml(text, 60)}</div>
-  ),
-},
-
-    // {
-    //   title: "Description",
-    //   dataIndex: "description",
-    //   key: "description",
-    //   render: (text: string) => (
-    //     <div
-    //       dangerouslySetInnerHTML={{
-    //         __html: DOMPurify.sanitize(
-    //           text
-    //             ? text.length > 60
-    //               ? text.slice(0, 60) + "..."
-    //               : text
-    //             : ""
-    //         ),
-    //       }}
-    //     ></div>
-    //   ),
-    // },
-
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      render: (text: string) => (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(
+              text?.length > 60 ? text.slice(0, 60) + "..." : text || ""
+            ),
+          }}
+        ></div>
+      ),
+    },
     {
-      title: "Updated At",
-      dataIndex: "updatedAt",
-      key: "updatedAt",
-      render: (date: string) => new Date(date).toLocaleDateString(),
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      render: (price: number) => `₹ ${price}`,
+    },
+    {
+      title: "SubCategory",
+      dataIndex: ["subCategory", "name"],
+      key: "subCategory",
+      render: (_: any, record: any) =>
+        record.subCategory?.name || "N/A",
     },
     {
       title: "Actions",
       key: "actions",
       render: (_: any, record: any) => (
-        <Space>
-          {/* <Button
-            type="text"
-            icon={<Eye size={16} />}
-            onClick={() => openDrawer(record)}
-          /> */}
+        <div className="flex gap-2">
           <Button
-            type="text"
-            icon={<Eye size={16} />}
-            onClick={() => navigate("/dashboard/feature-details", { state: { product: record } })}
-          />
-
-          <Button
-            type="text"
-            icon={<Edit2 size={16} />}
             onClick={() =>
-              navigate("/dashboard/productsForm", { state: { product: record } })
+              navigate("/dashboard/productsForm", {
+                state: { product: record },
+              })
             }
-          />
-          <Button
-            type="text"
-            danger
-            icon={<Trash2 size={16} />}
-            onClick={() => handleDeleteProduct(record.id)}
-          />
-        </Space>
+          >
+            Edit
+          </Button>
+
+          <Popconfirm
+            title="Delete this product?"
+            onConfirm={() => handleDelete(record.id)}
+          >
+            <Button danger>Delete</Button>
+          </Popconfirm>
+        </div>
       ),
     },
   ];
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Products</h1>
-        <div className="flex gap-2">
-           <Button
+    <div className="bg-white p-6 rounded-lg shadow">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">Products</h2>
+        <Button
           type="primary"
-          icon={<Plus size={16} />}
-          onClick={() => navigate("/dashboard/productHeading")}
-        >
-         Product Heading
-        </Button>
-
-           <Button
-          type="primary"
-          icon={<Plus size={16} />}
           onClick={() => navigate("/dashboard/productsForm")}
         >
-          Create Product
+          Add Product
         </Button>
-         
-
-        </div>
       </div>
 
+      {/* Table */}
       <Table
+        rowKey="id"
         columns={columns}
         dataSource={products}
         loading={loading}
-        rowKey="id"
-        pagination={{ pageSize: 10 }}
       />
-
-
-      <Drawer
-        title={`Features of "${selectedProduct?.title}"`}
-        width="100%"
-        onClose={() => setDrawerVisible(false)}
-        open={drawerVisible}
-        bodyStyle={{ padding: "24px", overflowY: "auto" }}
-      >
-        <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
-
-          <div style={{ flex: 2, minWidth: 300 }}>
-            <h3 className="text-lg font-semibold mb-4">Features</h3>
-            {featureLoading ? (
-              <p>Loading...</p>
-            ) : features.length === 0 ? (
-              <p>No features found.</p>
-            ) : (
-              <List
-                dataSource={features}
-                renderItem={(feature) => (
-                  <List.Item
-                    actions={[
-                      <Button
-                        type="text"
-                        danger
-                        onClick={() => handleDeleteFeature(feature.id)}
-                      >
-                        Delete
-                      </Button>,
-                    ]}
-                  >
-                    <List.Item.Meta
-                      avatar={
-                        feature.image ? (
-                          <Image
-                            src={feature.image}
-                            width={60}
-                            height={60}
-                            style={{ objectFit: "cover", borderRadius: 4 }}
-                          />
-                        ) : null
-                      }
-                      title={feature.title}
-                      description={feature.description}
-                    />
-                  </List.Item>
-                )}
-              />
-            )}
-          </div>
-
-
-          <div style={{ flex: 1, minWidth: 250 }}>
-            <h3 className="text-lg font-semibold mb-4">Add New Feature</h3>
-            <Form form={featureForm} layout="vertical" onFinish={addFeature}>
-              <Form.Item
-                name="title"
-                label="Title"
-                rules={[{ required: true, message: "Enter feature title" }]}
-              >
-                <Input placeholder="Feature title" />
-              </Form.Item>
-              <Form.Item
-                name="description"
-                label="Description"
-                rules={[{ required: true, message: "Enter feature description" }]}
-              >
-                <Input.TextArea rows={3} placeholder="Feature description" />
-              </Form.Item>
-              <Form.Item label="Image" rules={[{ required: true, message: "Upload feature image" }]}>
-                <Upload
-                  fileList={fileList}
-                  onChange={({ fileList }) => setFileList(fileList)}
-                  beforeUpload={() => false}
-                  listType="picture"
-                  maxCount={1}
-                >
-                  <Button icon={<UploadCloud size={16} />}>
-                    {fileList.length > 0 ? "Change Image" : "Upload Image"}
-                  </Button>
-                </Upload>
-              </Form.Item>
-              <Form.Item>
-                <Button type="primary" htmlType="submit" icon={<Plus />}>
-                  Add Feature
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
-        </div>
-      </Drawer>
     </div>
   );
 };
 
 export default ProductList;
-
-
-
 
