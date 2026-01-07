@@ -4,8 +4,8 @@ import axios from 'axios';
 
 
 // const BASE_URL = 'http://52.45.166.100:5000';
-// const BASE_URL = "https://streamapi.thestreamlinefactory.com";
-const BASE_URL = "https://api.aiendri.com";
+const BASE_URL = "http://localhost:5000";
+// const BASE_URL = "https://api.aiendri.com";
 
 
 
@@ -149,5 +149,79 @@ export const productService = {
   },
 };
 
+export const blogService = {
+  getBlogs: async (params?: any) => {
+    const response = await api.get("/api/blog", { params });
+    return response.data;
+  },
+
+  getBlogById: async (id: string) => {
+    const response = await api.get(`/api/blog/${id}`);
+    return response.data;
+  },
+
+  createBlog: async (data: FormData) => {
+    const response = await api.post("/api/blog", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data; // ✅ IMPORTANT
+  },
+
+  updateBlog: async (id: string, data: FormData) => {
+    const response = await api.patch(`/api/blog/${id}`, data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data; 
+  },
+
+  deleteBlog: async (id: string) => {
+    const response = await api.delete(`/api/blog/${id}`);
+    return response.data;
+  },
+};
 
 
+
+export interface BlogContentImage {
+  image: string;
+  order: number;
+}
+
+export interface BlogContent {
+  id: string;
+  blogId: string;
+  description: string;
+  order: number;
+  images: BlogContentImage[];
+}
+
+export const blogContentService = {
+  getContentsByBlogId: async (blogId: string) => {
+    const response = await api.get(`/api/blogContent/${blogId}`);
+    return response.data;
+  },
+
+  createContent: async (payload: FormData) => {
+    const response = await api.post("/api/blogContent", payload, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
+
+  getAllContents: async () => {
+    const response = await api.get(`/api/blogContent/`); // assumes your backend route for all contents is GET /api/blogContent
+    return response.data;
+  },
+
+  updateContent: async (id: string, payload: FormData) => {
+    const response = await api.patch(`/api/blogContent/${id}`, payload, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  },
+
+  deleteContent: async (id: string) => {
+    const response = await api.delete(`/api/blogContent/${id}`);
+    return response.data;
+  },
+};

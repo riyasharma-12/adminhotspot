@@ -14,6 +14,10 @@ import SubCategoryForm from "./components/SubCategory/SubCategoryForm";
 import SubCategoryList from "./components/SubCategory/SubCategoryList";
 import ProductForm from "./components/Product/ProductForm";
 import ProductList from "./components/Product/ProductList";
+import BlogForm from "./components/Blog/BlogForm";
+import BlogList from "./components/Blog/BlogList";
+import BlogContentForm from "./components/BlogContent/BlogContentForm";
+import BlogContentList from "./components/BlogContent/BlogContentList";
 
 function App() {
   return (
@@ -38,6 +42,10 @@ function App() {
             <Route path="subcategoriesForm" element={<SubCategoryForm />} />
             <Route path="products" element={<ProductList/>}></Route>
             <Route path="productsForm" element={<ProductForm/>}></Route>
+            <Route path="blogForm" element={<BlogForm/>}></Route>
+            <Route path="blogs" element={<BlogList/>}></Route>
+            <Route path="blogContentForm" element={<BlogContentForm/>}></Route>
+            <Route path="blogContent" element={<BlogContentList/>}></Route>
           </Route>
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>

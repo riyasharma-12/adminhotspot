@@ -69,6 +69,16 @@ const DashboardLayout: React.FC = () => {
                 icon: <LayoutDashboard size={18} />,
                 label: 'Products',
               },
+              {
+                key: '/Dashboard/blogs',
+                icon: <LayoutDashboard size={18} />,
+                label: 'Blog',
+              },
+              {
+                key: '/Dashboard/blogContent',
+                icon: <LayoutDashboard size={18} />,
+                label: 'BlogContent',
+              },
 
             ]}
 
