@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState, AppDispatch } from "../../store/store";
 import { fetchAllContents, deleteContent } from "../../store/slices/blogContentSlice";
+import DOMPurify from "dompurify";
 
 const AllBlogContents: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -38,7 +39,21 @@ const AllBlogContents: React.FC = () => {
       key: "blog",
       render: (text: string) => <strong>{text}</strong>,
     },
-    { title: "Description", dataIndex: "description", key: "description" },
+    // { title: "Description", dataIndex: "description", key: "description" },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      render: (text: string) => (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(
+              text?.length > 60 ? text.slice(0, 60) + "..." : text || ""
+            ),
+          }}
+        ></div>
+      ),
+    },
     // { title: "Order", dataIndex: "order", key: "order" },
     {
       title: "Images",

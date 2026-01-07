@@ -48,11 +48,11 @@ const DashboardLayout: React.FC = () => {
             }}
             className="bg-[rgb(31,41,55)] text-white border-none flex-grow"
             items={[
-              {
-                key: '/dashboard',
-                icon: <LayoutDashboard size={18} />,
-                label: 'Dashboard',
-              },
+            //   {
+            //     key: '/dashboard',
+            //     icon: <LayoutDashboard size={18} />,
+            //     label: 'Dashboard',
+            //   },
 
               {
                 key: '/Dashboard/categories',
