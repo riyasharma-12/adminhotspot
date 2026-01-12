@@ -16,8 +16,12 @@ const CategoryList: React.FC = () => {
     (state: RootState) => state.categories
   );
 
+  // useEffect(() => {
+  //   dispatch(fetchCategories(undefined));
+  // }, [dispatch]);
   useEffect(() => {
-    dispatch(fetchCategories(undefined));
+    //  Pass limit parameter to fetch all categories
+    dispatch(fetchCategories({ limit: 1000 }));
   }, [dispatch]);
 
   const handleEdit = (category: any) =>
@@ -27,6 +31,7 @@ const CategoryList: React.FC = () => {
     try {
       await dispatch(deleteCategory(id)).unwrap();
       message.success("Category deleted successfully");
+       dispatch(fetchCategories({ limit: 1000 }));
     } catch {
       message.error("Failed to delete category");
     }
@@ -77,6 +82,11 @@ const CategoryList: React.FC = () => {
         columns={columns}
         dataSource={categories}
         loading={loading}
+        pagination={{
+          pageSize: 10,
+          showSizeChanger: true,
+          showTotal: (total) => `Total ${total} categories`,
+        }}
       />
     </div>
   );

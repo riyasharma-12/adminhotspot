@@ -14,11 +14,14 @@ const AllBlogContents: React.FC = () => {
     (state: RootState) => state.blogContent
   );
 
+  console.log(contents)
   // Fetch all contents
+
   useEffect(() => {
     dispatch(fetchAllContents());
   }, [dispatch]);
 
+  
   const handleEdit = (content: any) =>
     navigate("/dashboard/blogContentForm", { state: { content } });
 

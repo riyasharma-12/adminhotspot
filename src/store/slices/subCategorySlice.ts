@@ -14,11 +14,13 @@ interface SubCategory {
 interface SubCategoryState {
   subCategories: SubCategory[];
   loading: boolean;
+  total: number;
   error: string | null;
 }
 
 const initialState: SubCategoryState = {
   subCategories: [],
+  total: 0,
   loading: false,
   error: null,
 };
@@ -84,6 +86,7 @@ const subCategorySlice = createSlice({
       .addCase(fetchSubCategories.fulfilled, (state, action) => {
         state.loading = false;
         state.subCategories = action.payload.data;
+        state.total = action.payload.total;
       })
       .addCase(fetchSubCategories.rejected, (state, action) => {
         state.loading = false;

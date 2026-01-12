@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+
+import React, { useEffect, useState } from "react";
 import { Table, Button, Image, Popconfirm, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,18 +11,23 @@ const ProductList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const { products, loading } = useSelector(
+  const { products, total, loading } = useSelector(
     (state: RootState) => state.products
   );
 
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+
+  // ✅ Fetch products on page change
   useEffect(() => {
-    dispatch(fetchProducts(undefined));
-  }, [dispatch]);
+    dispatch(fetchProducts( { page: 1, limit: 1000 } ));
+  }, [dispatch, page]);
 
   const handleDelete = async (id: string) => {
     try {
       await dispatch(deleteProduct(id)).unwrap();
       message.success("Product deleted successfully");
+      dispatch(fetchProducts({ page: 1, limit: 1000 }));
     } catch {
       message.error("Failed to delete product");
     }
@@ -40,13 +46,6 @@ const ProductList: React.FC = () => {
       dataIndex: "title",
       key: "title",
     },
-    // {
-    //   title: "Description",
-    //   dataIndex: "description",
-    //   key: "description",
-    //   ellipsis: true,
-    // },
-
     {
       title: "Description",
       dataIndex: "description",
@@ -58,7 +57,7 @@ const ProductList: React.FC = () => {
               text?.length > 60 ? text.slice(0, 60) + "..." : text || ""
             ),
           }}
-        ></div>
+        />
       ),
     },
     {
@@ -69,7 +68,6 @@ const ProductList: React.FC = () => {
     },
     {
       title: "SubCategory",
-      dataIndex: ["subCategory", "name"],
       key: "subCategory",
       render: (_: any, record: any) =>
         record.subCategory?.name || "N/A",
@@ -119,6 +117,12 @@ const ProductList: React.FC = () => {
         columns={columns}
         dataSource={products}
         loading={loading}
+       pagination={{
+          pageSize: 10,
+          showSizeChanger: true,
+          showTotal: (total) => `Total ${total} products`
+        }}
+
       />
     </div>
   );

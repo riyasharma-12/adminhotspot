@@ -10,6 +10,7 @@ const BlogList: React.FC = () => {
   const navigate = useNavigate();
 
   const { blogs, loading } = useSelector((state: RootState) => state.blog);
+  console.log(blogs)
 
   useEffect(() => {
     dispatch(fetchBlogs(undefined));
@@ -110,7 +111,7 @@ const BlogList: React.FC = () => {
         columns={columns}
         dataSource={blogs}
         loading={loading}
-        // scroll={{ x: 800 }}
+      // scroll={{ x: 800 }}
       />
     </div>
   );
