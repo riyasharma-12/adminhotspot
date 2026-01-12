@@ -147,6 +147,11 @@ export const productService = {
     const response = await api.delete(`/api/product/${id}`);
     return response.data;
   },
+
+  toggleProductStatus: async (id:string) => {
+    const response = await api.patch(`/api/product/${id}/toggle-status`);
+    return response.data;
+  },
 };
 
 export const blogService = {
