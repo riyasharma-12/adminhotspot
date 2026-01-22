@@ -125,6 +125,7 @@ interface Product {
   description: string;
   price: number;
   image?: string;
+  categoryId?: string;
   subCategoryId: string;
   isActive: boolean; // ✅ Add this
   subCategory?: {
