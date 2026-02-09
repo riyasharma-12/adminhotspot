@@ -720,8 +720,10 @@ const ProductForm: React.FC = () => {
 
   /* ================= INIT ================= */
   useEffect(() => {
-    dispatch(fetchCategories(undefined));
-    dispatch(fetchSubCategories(undefined));
+    dispatch(fetchCategories({ page: 1, limit: 1000 }));
+    // dispatch(fetchSubCategories(undefined));
+    dispatch(fetchSubCategories({ page: 1, limit: 1000 }));
+
 
     if (product) {
       form.setFieldsValue({
