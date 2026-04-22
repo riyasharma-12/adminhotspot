@@ -9,13 +9,11 @@ export default function Sidebar() {
 
       <nav className="flex flex-col p-4 gap-3">
         <Link to="/" className="hover:bg-blue-00 p-2 rounded">Dashboard</Link>
-        <Link to="/reports" className="hover:bg-blue-700 p-2 rounded">Report</Link>
-        <Link to="/schools" className="hover:bg-blue-700 p-2 rounded">Schools</Link>
         <Link to="/users" className="hover:bg-blue-700 p-2 rounded">Users</Link>
-        <Link to="/moderation" className="hover:bg-blue-700 p-2 rounded">Moderation</Link>
-        <Link to="/payments" className="hover:bg-blue-700 p-2 rounded">Payments</Link>
-        <Link to="/messaging" className="hover:bg-blue-700 p-2 rounded">Messaging</Link>
-        {/* <Link to="/settings" className="hover:bg-blue-700 p-2 rounded">Settings</Link> */}
+        <Link to="/blogs" className="hover:bg-blue-700 p-2 rounded">Blog Management</Link>
+        <Link to="/reviews" className="hover:bg-blue-700 p-2 rounded">Review Management</Link>
+        <Link to="/orders" className="hover:bg-blue-700 p-2 rounded">Orders</Link>
+         <Link to="/setting" className="hover:bg-blue-700 p-2 rounded">Setting</Link>
       </nav>
     </div>
   );

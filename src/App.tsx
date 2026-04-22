@@ -1,29 +1,56 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "../src/components/Layout";
-import Dashboard from "../src/pages/Dashboard";
-import Schools from "../src/pages/School";
-import Users from "../src/pages/Users";
-import Messaging from "../src/pages/Messaging";
-import Settings from "../src/pages/Setting";
-import Report from "../src/pages/Report"
-import ContentModeration from "../src/pages/ContentModeration"
-import Paying from "../src/pages/Paying"
+
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from "./store";
+
+import Layout from "./components/Layout";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Users from "./pages/Users";
+import Blog from "./pages/BlogManagement"
+import Reviews from "./pages/ReviewManagement"
+import Order from "./pages/Order"
+import Setting from "./pages/Setting"
+
+// ── Guard: redirects to /login if not authenticated as ADMIN ─────────────────
+function AdminRoute({ children }: { children: React.ReactNode }) {
+  const { accessToken, user } = useSelector((state: RootState) => state.auth);
+
+  if (!accessToken || user?.role !== "ADMIN") {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+}
 
 function App() {
   return (
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-            <Route path="/reports" element={<Report />} />
-          <Route path="/schools" element={<Schools />} />
-          <Route path="/moderation" element={<ContentModeration/>} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/messaging" element={<Messaging />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/payments" element={<Paying/>} />
-        </Routes>
-      </Layout>
+      <Routes>
+
+        {/* ── Public ──────────────────────────────────────────────────────── */}
+        <Route path="/login" element={<Login />} />
+
+        {/* ── Protected (ADMIN only) ───────────────────────────────────────── */}
+        <Route
+          path="/*"
+          element={
+            <AdminRoute>
+              <Layout>
+                <Routes>
+                  <Route path="/"            element={<Dashboard />} />
+                  <Route path="/users"       element={<Users />} />
+                  <Route path="/blogs"   element={<Blog />} />
+                  <Route path="/reviews"    element={<Reviews />} />
+                  <Route path="/orders"    element={<Order />} />
+                    <Route path="/setting"    element={<Setting />} />
+                </Routes>
+              </Layout>
+            </AdminRoute>
+          }
+        />
+
+      </Routes>
     </BrowserRouter>
   );
 }
